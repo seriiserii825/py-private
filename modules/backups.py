@@ -1,0 +1,35 @@
+import os
+from libs.buffer import addToClipBoard
+from termcolor import colored
+from utils.getProjects import getProjects
+from utils.getVps import getVps
+from utils.selectWpressFile import selectWpressFiles
+
+def backups():
+    if not os.path.exists('front-page.php'):
+        print(colored("File front-page.php does  not exist", "red"))
+        exit(1)
+    current_dir_path = os.getcwd()
+    theme_name = os.path.basename(current_dir_path)
+    projects = getProjects(theme_name)
+    wpress_file = selectWpressFiles()
+
+    print(colored(f"File: {wpress_file}", "blue"))
+    for project in projects:
+        if project['title'] == theme_name:
+            vps = project['vps']
+            vps_list = getVps()
+            vps_item = next((item for item in vps_list if item["name"] == vps), None)
+            print(f"vps_item: {vps_item}")
+            if vps_item is None:
+                print(colored(f"VPS {vps} not found", "red"))
+                exit(1)
+            vps_pass = vps_item['password']
+            addToClipBoard(vps_pass)
+            vps_path = project['path']
+            vps_url = f"{vps_item['user']}@{vps_item['ip']}"
+            vps_command = f"rsync -avP '{wpress_file}' {vps_url}:{vps_path}"
+            print(colored(f"VPS command: {vps_command}", "blue"))
+            os.system(vps_command)
+            print(colored("File copied", "green"))
+            break
