@@ -6,8 +6,8 @@ from utils.getVps import getVps
 from utils.selectWpressFile import selectWpressFiles
 
 def backups():
-    if not os.path.exists('front-page.php'):
-        print(colored("File front-page.php does  not exist", "red"))
+    if not os.path.exists('style.css'):
+        print(colored("File style.css does  not exist", "red"))
         exit(1)
     current_dir_path = os.getcwd()
     theme_name = os.path.basename(current_dir_path)
