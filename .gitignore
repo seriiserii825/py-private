@@ -48,3 +48,5 @@ venv/
 
 # Sphinx documentation
 docs/_build/
+list.csv
+servers.csv
