@@ -1,24 +1,20 @@
 import os
-import json
 import subprocess
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 import time
 from rich import print
+from modules.Projects import Projects
 
 def uploadFiles():
-# Load configuration from config.json
-    CONFIG_FILE = ".vscode/sftp.json"
-
-    with open(CONFIG_FILE) as f:
-        config = json.load(f)
-
-    HOST = config['host']
-    PORT = config['port']
-    USERNAME = config['username']
-    PASSWORD = config['password']
-    REMOTE_PATH = config['remotePath']
-    IGNORE_PATTERNS = '|'.join(config['ignore'])
+    project = Projects()
+    project.isCurrentProject()
+    HOST = project.project['server_name']
+    PORT = 22
+    USERNAME = project.project['server_login']
+    PASSWORD = project.project['server_password']
+    REMOTE_PATH = project.project['server_path']
+    IGNORE_PATTERNS = ".git|.vscode|node_modules|dist|__pycache__"
 
     REMOTE_PATH = REMOTE_PATH if REMOTE_PATH.endswith('/') else REMOTE_PATH + '/'
 
