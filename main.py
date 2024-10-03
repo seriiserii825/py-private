@@ -7,6 +7,7 @@ from rich import print
 from rich.console import Console
 from rich.table import Table
 
+from modules.uploadFiles import uploadFiles
 from modules.viewProjects import viewProjects
 
 if __name__ == "__main__":
@@ -20,7 +21,8 @@ def menu():
     table.add_row("2", "[blue]Upload Backup")
     table.add_row("3", "[yellow]Connect to Server")
     table.add_row("4", "[yellow]Connect to project on server")
-    table.add_row("5", "[exit]Exit")
+    table.add_row("5", "[blue]Upload files")
+    table.add_row("6", "[exit]Exit")
     console = Console()
     console.print(table)
 
@@ -38,6 +40,9 @@ def menu():
         connectToProject()
         menu()
     elif input_user == "5":
+        uploadFiles()
+        menu()
+    elif input_user == "6":
         print("[red]Exit")
         exit()
     else:
