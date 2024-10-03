@@ -9,7 +9,7 @@ from modules.Projects import Projects
 def uploadFiles():
     project = Projects()
     project.isCurrentProject()
-    HOST = project.project['server_name']
+    HOST = project.project['server_host']
     PORT = 22
     USERNAME = project.project['server_login']
     PASSWORD = project.project['server_password']
@@ -90,11 +90,18 @@ def uploadFiles():
             print("[red]Failed to build the project.")
             exit(1)
         dist_path = "dist"
+        # remove dist on server
+        command = [
+            "sshpass", "-p", PASSWORD, "ssh", "-p", str(PORT),
+            f"{USERNAME}@{HOST}", f"rm -rf {REMOTE_PATH}dist"
+        ]
+        subprocess.run(command, check=True)
         command = [
             "sshpass", "-p", PASSWORD, "rsync", "-avz", "--progress",
             f"--rsh=sshpass -p {PASSWORD} ssh -p {PORT}",
             dist_path, f"{USERNAME}@{HOST}:{REMOTE_PATH}"
         ]
+        print(f"command: {command}")
         subprocess.run(command, check=True)
         print(f"Uploading {dist_path} to {REMOTE_PATH}")
         notify_send(f"Uploading {dist_path} to {REMOTE_PATH}")
