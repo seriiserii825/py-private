@@ -2,6 +2,7 @@ import subprocess
 import pyperclip
 from rich import print
 
+from libs.buffer import addToClipBoardFile
 from modules.getHostByProjectName import getHostByProjectName
 from modules.getServerByHost import getServerByHost
 from modules.notifySend import notify_send
@@ -25,6 +26,7 @@ def downloadFiles():
             host= server[1]
             ip = server[2]
             password = server[3].split("\n")[0]
+            # addToClipBoardFile(password)
             # Constructing the command
             command = f"sshpass -p {password} scp -r {host}@{ip}:{clipboard} ."
 
