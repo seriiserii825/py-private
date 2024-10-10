@@ -2,6 +2,7 @@
 
 from modules.backups import backups
 from modules.connectToProject import connectToProject
+from modules.downloadFiles import downloadFiles
 from modules.server import server
 from rich import print
 from rich.console import Console
@@ -22,7 +23,8 @@ def menu():
     table.add_row("3", "[yellow]Connect to Server")
     table.add_row("4", "[yellow]Connect to project on server")
     table.add_row("5", "[blue]Upload files")
-    table.add_row("6", "[exit]Exit")
+    table.add_row("6", "[green]Download files")
+    table.add_row("7", "[exit]Exit")
     console = Console()
     console.print(table)
 
@@ -43,6 +45,9 @@ def menu():
         uploadFiles()
         menu()
     elif input_user == "6":
+        downloadFiles()
+        menu()
+    elif input_user == "7":
         print("[red]Exit")
         exit()
     else:
