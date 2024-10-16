@@ -12,6 +12,7 @@ def uploadFiles():
     project.isCurrentProject()
     HOST = project.project['server_host']
     PORT = project.project['server_port'] if project.project['server_port'] else 22
+    print(f"PORT: {PORT}")
     USERNAME = project.project['server_login']
     PASSWORD = project.project['server_password']
     REMOTE_PATH = project.project['server_path']
@@ -28,6 +29,7 @@ def uploadFiles():
     def upload_file(file_path):
         """Upload a file to the remote server."""
         relative_path = os.path.relpath(file_path, ".")
+        print(f"PORT upload_file: {PORT}")
         command = [
             "sshpass", "-p", PASSWORD, "rsync", "-avz", "--progress",
             f"--rsh=sshpass -p {PASSWORD} ssh -p {PORT}",
