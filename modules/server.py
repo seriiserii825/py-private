@@ -10,7 +10,9 @@ def server():
     choosed_server = serverMenu()
     print(Panel(f"Choosed server: [green]{choosed_server['name']}"))
     password = choosed_server['password']
-    command = f"sshpass -p {password} ssh {choosed_server['user']}@{choosed_server['ip']}"
+    port = choosed_server['port']
+    command = f"sshpass -p {password} ssh -p {port} {choosed_server['user']}@{choosed_server['ip']}"
+    # command = f"sshpass -p {password} ssh {choosed_server['user']}@{choosed_server['ip']}"
     print(Panel(f"Command: [green]{command}"))
     os.system(command)
 
