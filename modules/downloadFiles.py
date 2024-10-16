@@ -26,9 +26,23 @@ def downloadFiles():
             host= server[1]
             ip = server[2]
             password = server[3].split("\n")[0]
-            # addToClipBoardFile(password)
+            port = server[4].strip() if len(server) > 4 else 22
+            addToClipBoardFile(password)
+            PASSWORD = password
             # Constructing the command
-            command = f"sshpass -p {password} scp -r {host}@{ip}:{clipboard} ."
+            # command = f"sshpass -p {password} scp -P {port} -r {host}@{ip}:{clipboard} ."
+            # command = [
+            #     "sshpass", "-p", PASSWORD, "rsync", "-avz", "--progress",
+            #     f"--rsh=sshpass -p {PASSWORD} ssh -p {PORT}",
+            #     file_path, f"{USERNAME}@{HOST}:{REMOTE_PATH}{relative_path}"
+            # ]
+            command = [
+                    "sshpass", "-p", PASSWORD, "scp", "-P", str(port), "-r",
+                    f"{host}@{ip}:{clipboard}", "."
+                    ]
+            print(f"command: {command}")
+            subprocess.run(command, check=True)
+            notify_send(f"Downloading {clipboard}")
 
             # Running the command
             try:
