@@ -4,6 +4,7 @@ from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 import time
 from rich import print
+from libs.buffer import addToClipBoard
 from modules.Projects import Projects
 
 def uploadFiles():
@@ -18,6 +19,8 @@ def uploadFiles():
 
     REMOTE_PATH = REMOTE_PATH if REMOTE_PATH.endswith('/') else REMOTE_PATH + '/'
 
+    addToClipBoard(PASSWORD)
+
     def notify_send(message):
         """Send a notification using notify-send."""
         subprocess.run(['notify-send', message], check=True)
@@ -30,8 +33,8 @@ def uploadFiles():
             f"--rsh=sshpass -p {PASSWORD} ssh -p {PORT}",
             file_path, f"{USERNAME}@{HOST}:{REMOTE_PATH}{relative_path}"
         ]
+        print(command)
         subprocess.run(command, check=True)
-        print(f"Uploading {file_path} to {REMOTE_PATH}{relative_path}")
         notify_send(f"Uploading {file_path} to {REMOTE_PATH}{relative_path}")
 
     def delete_file(file_path):

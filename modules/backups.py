@@ -25,10 +25,12 @@ def backups():
                 print(colored(f"VPS {vps} not found", "red"))
                 exit(1)
             vps_pass = vps_item['password']
+            vps_port = vps_item['port']
             addToClipBoard(vps_pass)
             vps_path = project['path']
             vps_url = f"{vps_item['user']}@{vps_item['ip']}"
-            vps_command = f"rsync -avP '{wpress_file}' {vps_url}:{vps_path}"
+            # vps_command = f"rsync -avP '{wpress_file}' {vps_url}:{vps_path}"
+            vps_command = f"rsync -avP -e 'sshpass -p {vps_pass} ssh -p {vps_port}' '{wpress_file}' {vps_url}:{vps_path}"
             print(colored(f"VPS command: {vps_command}", "blue"))
             os.system(vps_command)
             print(colored("File copied", "green"))

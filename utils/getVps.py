@@ -1,4 +1,3 @@
-import sys
 import os
 def getVps():
     ROOT_DIR = os.path.dirname(
@@ -12,11 +11,17 @@ def getVps():
     with open(server_file_path, "r") as file:
         servers = []
         for line in file:
-            name, user, ip, password = line.strip().split(",")
+            data = line.strip().split(",")
+            name = data[0]
+            user = data[1]
+            ip = data[2]
+            password = data[3]
+            port = data[4] if len(data) > 4 else 22
             servers.append({
                 "name": name,
                 "user": user,
                 "ip": ip,
-                "password": password
+                "password": password,
+                "port": port
                 })
     return servers
