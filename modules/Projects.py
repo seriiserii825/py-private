@@ -11,7 +11,8 @@ class Projects:
                 "server_host": "",
                 "server_path": "",
                 "server_login": "",
-                "server_password": ""
+                "server_password": "",
+                "server_port": 22
                 }
         self.project_name = ""
         current_file = Path(__file__).resolve()
@@ -59,6 +60,8 @@ class Projects:
                     self.project['server_login'] = server_data[1]
                     self.project['server_host'] = server_data[2]
                     self.project['server_password'] = server_data[3]
+                    if server_data[4]:
+                        self.project['server_port'] = server_data[4]
                     print(f"Server found: [green]{self.project['server_name']}")
         if not self.project['server_login']:
             print("[red]Server not found")

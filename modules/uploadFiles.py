@@ -10,7 +10,7 @@ def uploadFiles():
     project = Projects()
     project.isCurrentProject()
     HOST = project.project['server_host']
-    PORT = 22
+    PORT = project.project['server_port'] if project.project['server_port'] else 22
     USERNAME = project.project['server_login']
     PASSWORD = project.project['server_password']
     REMOTE_PATH = project.project['server_path']
