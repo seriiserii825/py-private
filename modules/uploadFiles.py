@@ -27,6 +27,7 @@ def uploadFiles():
         subprocess.run(['notify-send', message], check=True)
 
     def upload_file(file_path):
+        print(f'file_path: {file_path}')
         """Upload a file to the remote server."""
         relative_path = os.path.relpath(file_path, ".")
         print(f"PORT upload_file: {PORT}")
@@ -108,7 +109,14 @@ def uploadFiles():
         ]
         print(f"command: {command}")
         subprocess.run(command, check=True)
-        print(f"Uploading {dist_path} to {REMOTE_PATH}")
+        # upload front-page on server
+        command = [
+            "sshpass", "-p", PASSWORD, "rsync", "-avz", "--progress",
+            f"--rsh=sshpass -p {PASSWORD} ssh -p {PORT}",
+            './functions.php', f"{USERNAME}@{HOST}:{REMOTE_PATH}/functions.php"
+        ]
+        subprocess.run(command, check=True)
+        print(f"command: {command}")
         notify_send(f"Uploading {dist_path} to {REMOTE_PATH}")
 
     print("1) Upload all files(type 1 or any key, or press enter)")
