@@ -36,6 +36,11 @@ def uploadFiles():
             f"--rsh=sshpass -p {PASSWORD} ssh -p {PORT}",
             file_path, f"{USERNAME}@{HOST}:{REMOTE_PATH}{relative_path}"
         ]
+        # command = [
+        #     "sshpass", "-p", PASSWORD, "rsync", "-avz", "--progress",
+        #     "-e", f"ssh -p {PORT}",
+        #     file_path, f"{USERNAME}@{HOST}:{REMOTE_PATH}{relative_path}"
+        # ]
         print(command)
         subprocess.run(command, check=True)
         notify_send(f"Uploading {file_path} to {REMOTE_PATH}{relative_path}")
