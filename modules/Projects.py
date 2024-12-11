@@ -60,8 +60,11 @@ class Projects:
                     self.project['server_login'] = server_data[1]
                     self.project['server_host'] = server_data[2]
                     self.project['server_password'] = server_data[3]
-                    if server_data[4]:
+                    # Check if server_data has at least 5 elements
+                    if len(server_data) > 4 and server_data[4]:
                         self.project['server_port'] = server_data[4]
+                    else:
+                        self.project['server_port'] = 22
                     print(f"Server found: [green]{self.project['server_name']}")
         if not self.project['server_login']:
             print("[red]Server not found")
