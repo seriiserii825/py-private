@@ -1,4 +1,5 @@
 import os
+from libs.buffer import addToClipBoard
 from utils.getVps import getVps
 from termcolor import colored
 from rich import print
@@ -11,7 +12,9 @@ def server():
     print(Panel(f"Choosed server: [green]{choosed_server['name']}"))
     password = choosed_server['password']
     port = choosed_server['port']
-    command = f"sshpass -p {password} ssh -p {port} {choosed_server['user']}@{choosed_server['ip']}"
+    addToClipBoard(password)
+    command = f"ssh -p {port} {choosed_server['user']}@{choosed_server['ip']}"
+    # command = f"sshpass -p {password} ssh -p {port} {choosed_server['user']}@{choosed_server['ip']}"
     # command = f"sshpass -p {password} ssh {choosed_server['user']}@{choosed_server['ip']}"
     print(Panel(f"Command: [green]{command}"))
     os.system(command)

@@ -1,4 +1,5 @@
 import os
+from libs.buffer import addToClipBoard
 from utils.getProjectsFromCsv import getProjectsFromCsv
 from pyfzf.pyfzf import FzfPrompt
 
@@ -19,7 +20,8 @@ def connectToProject():
                     server_password = vps['password']
                     server_port = vps['port']
                     new_path = f"{path_without_last_segment}/themes/{project['title']}"
-                    command = f"sshpass -p {server_password} ssh -t -p {server_port} {vps['user']}@{vps['ip']} \"cd {new_path} ; bash --login\" "
+                    addToClipBoard(server_password)
+                    command = f"ssh -t -p {server_port} {vps['user']}@{vps['ip']} \"cd {new_path} ; bash --login\" "
                     # command = f"sshpass -p {server_password} ssh -t {vps['user']}@{vps['ip']} \"cd {new_path} ; bash --login\" "
                     print(f"Command: {command}")
                     os.system(command)
