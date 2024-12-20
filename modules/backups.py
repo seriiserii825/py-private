@@ -27,6 +27,10 @@ def backups():
             vps_pass = vps_item['password']
             vps_port = vps_item['port']
             vps_path = project['path']
+            # if not exists str wp-content/ai1wm-backups in vps_path
+            if not 'wp-content' in vps_path:
+                print(colored(f"Path {vps_path} is not correct", "red"))
+                exit(1)
             path_arr = vps_path.split('/')
             path_to_aimwp = '/'.join(path_arr[:-2]) + '/ai1wm-backups'
             vps_url = f"{vps_item['user']}@{vps_item['ip']}"
