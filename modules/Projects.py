@@ -35,13 +35,7 @@ class Projects:
                 if project_data[0] == self.project_name:
                     self.project['name'] = project_data[0]
                     self.project['server_name'] = project_data[1]
-                    backups_path = project_data[2]
-                    theme_path = backups_path.split("/")
-                    theme_path.pop()
-                    theme_path = "/".join(theme_path)
-                    theme_path = f"{theme_path}/themes/{self.project_name}"
-                    print(f"theme_path: {theme_path}")
-                    self.project['server_path'] = theme_path
+                    self.project['server_path'] = project_data[2]
         if not self.project:
             print("Project not found")
             exit()
