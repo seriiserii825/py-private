@@ -1,6 +1,9 @@
+import csv
 import os
 from rich import print
 from pathlib import Path
+
+from libs.buffer import addToClipBoard
 
 
 class Projects:
@@ -20,6 +23,28 @@ class Projects:
 
     def getProjects(self):
         return self.project
+
+    def getServerByName(self, server_name):
+        csv_file = f"{self.SCRIPT_DIR}/servers.csv"
+        with open(csv_file, "r") as f:
+            for line in f:
+                server_data = line.strip().split(",")
+                if server_data[0] == server_name:
+                    return {
+                        "name": server_data[0],
+                        "login": server_data[1],
+                        "host": server_data[2],
+                        "password": server_data[3],
+                        "port": server_data[4] if len(server_data) > 4 and server_data[4] else 22
+                    }
+        return {}
+
+    def copyServerToClipboard(self, server):
+        addToClipBoard(f"{server['port']}")
+        addToClipBoard(f"{server['password']}")
+        addToClipBoard(f"{server['login']}")
+        addToClipBoard(f"{server['host']}")
+        print("[green]Server data copied to clipboard")
 
     def isCurrentProject(self):
         current_dir = os.getcwd()
@@ -45,6 +70,16 @@ class Projects:
         else:
             print(f"Project found: [green]{self.project['name']}")
             return self.project
+
+    def getServersFromCsv(self):
+        csv_file = f"{self.SCRIPT_DIR}/servers.csv"
+        servers = []
+        with open(csv_file, 'r', newline='') as infile:
+            reader = csv.DictReader(infile)
+            for row in reader:
+                servers.append(row['name'])
+        return servers
+
     def getServerFromCsv(self):
         csv_file = f"{self.SCRIPT_DIR}/servers.csv"
         with open(csv_file, "r") as f:

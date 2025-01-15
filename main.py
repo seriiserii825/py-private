@@ -2,6 +2,7 @@
 
 from modules.backups import backups
 from modules.connectToProject import connectToProject
+from modules.copyServerDataToClipboard import copyServerDataToClipboard
 from modules.downloadFiles import downloadFiles
 from modules.server import server
 from rich import print
@@ -24,7 +25,8 @@ def menu():
     table.add_row("4", "[yellow]Connect to project on server")
     table.add_row("5", "[blue]Upload files")
     table.add_row("6", "[green]Download files")
-    table.add_row("7", "[exit]Exit")
+    table.add_row("7", "[blue]Copy server data to clipboard")
+    table.add_row("8", "[exit]Exit")
     console = Console()
     console.print(table)
 
@@ -48,6 +50,9 @@ def menu():
         downloadFiles()
         menu()
     elif input_user == "7":
+        copyServerDataToClipboard()
+        exit()
+    elif input_user == "8":
         print("[red]Exit")
         exit()
     else:
