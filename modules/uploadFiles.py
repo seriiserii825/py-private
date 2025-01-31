@@ -96,6 +96,7 @@ def uploadFiles():
 
     def build_upload_dist():
         """Upload the 'dist' folder."""
+        subprocess.run(["yarn", "install"], check=True)
         yarn_build = subprocess.run(["yarn", "build"], check=True)
         if yarn_build.returncode != 0:
             print("[red]Failed to build the project.")
