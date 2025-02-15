@@ -1,5 +1,6 @@
 import csv
 import os
+import time
 from rich import print
 from pathlib import Path
 
@@ -40,11 +41,14 @@ class Projects:
         return {}
 
     def copyServerToClipboard(self, server):
-        addToClipBoard(f"{server['port']}")
         addToClipBoard(f"{server['password']}")
-        addToClipBoard(f"{server['login']}")
-        addToClipBoard(f"{server['host']}")
-        print("[green]Server data copied to clipboard")
+        print("[green]Password copied to clipboard")
+        time.sleep(3)  # Give user time to paste the password before overwriting
+        if server['port'] == 22:
+            addToClipBoard(f"ssh {server['login']}@{server['host']}")
+        else:
+            addToClipBoard(f"ssh -p {server['port']} {server['login']}@{server['host']}")
+        print("[green]User and host copied to clipboard")
 
     def isCurrentProject(self):
         current_dir = os.getcwd()
