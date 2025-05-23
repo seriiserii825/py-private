@@ -4,6 +4,7 @@ from modules.backups import backups
 from modules.connectToProject import connectToProject
 from modules.copyServerDataToClipboard import copyServerDataToClipboard
 from modules.downloadFiles import downloadFiles
+from modules.findProject import findProject
 from modules.server import server
 from rich import print
 from rich.console import Console
@@ -20,6 +21,7 @@ def menu():
     table.add_column("Index", style="magenta")
     table.add_column("Option", no_wrap=True)
     table.add_row("1", "[green]View All Projects")
+    table.add_row("1.1", "[green]Find Project")
     table.add_row("2", "[blue]Upload Backup")
     table.add_row("3", "[yellow]Connect to Server")
     table.add_row("4", "[yellow]Connect to project on server")
@@ -33,6 +35,9 @@ def menu():
     input_user = input("Enter your choice: ")
     if input_user == "1":
         viewProjects()
+        menu()
+    elif input_user == "1.1":
+        findProject()
         menu()
     elif input_user == "2":
         backups()
