@@ -16,7 +16,7 @@ def uploadFiles():
     USERNAME = project.project['server_login']
     PASSWORD = project.project['server_password']
     REMOTE_PATH = project.project['server_path']
-    IGNORE_PATTERNS = ".git|.vscode|node_modules|dist|__pycache__|yarn.lock|.idea"
+    IGNORE_PATTERNS = ".git|.vscode|node_modules|dist|__pycache__|yarn.lock|.idea|vendor"
 
     REMOTE_PATH = REMOTE_PATH if REMOTE_PATH.endswith('/') else REMOTE_PATH + '/'
 
