@@ -52,3 +52,4 @@ select = [
     "F841",  # Local variable is assigned to but never used
     "E501",  # Line too long
     "I",     # Import sorting (isort-compatible)
+]
