@@ -2,7 +2,32 @@
 name = "my_project"
 version = "0.1.0"
 description = ""
-
+dependencies = [
+    "asttokens==3.0.0",
+    "decorator==5.1.1",
+    "executing==2.1.0",
+    "ipdb==0.13.13",
+    "ipython==8.31.0",
+    "jedi==0.19.2",
+    "markdown-it-py==3.0.0",
+    "matplotlib-inline==0.1.7",
+    "mdurl==0.1.2",
+    "parso==0.8.4",
+    "pexpect==4.9.0",
+    "prompt-toolkit==3.0.48",
+    "ptyprocess==0.7.0",
+    "pure-eval==0.2.3",
+    "pyfzf==0.3.1",
+    "pygments==2.18.0",
+    "pyperclip==1.9.0",
+    "rich==13.9.1",
+    "ruff>=0.12.2",
+    "stack-data==0.6.3",
+    "termcolor==2.4.0",
+    "traitlets==5.14.3",
+    "watchdog==5.0.3",
+    "wcwidth==0.2.13",
+]
 [tool.ruff]
 line-length = 88
 exclude = [
@@ -17,7 +42,6 @@ exclude = [
     "__pycache__",
 ]
 fix = true
-unsafe-fixes = true
 target-version = "py312"  # <- specify Python 3.12 explicitly here
 
 [tool.ruff.lint]
@@ -28,4 +52,3 @@ select = [
     "F841",  # Local variable is assigned to but never used
     "E501",  # Line too long
     "I",     # Import sorting (isort-compatible)
-]

@@ -1,4 +1,5 @@
 import subprocess
+
 import pyperclip
 from rich import print
 
@@ -6,6 +7,8 @@ from libs.buffer import addToClipBoardFile
 from modules.getHostByProjectName import getHostByProjectName
 from modules.getServerByHost import getServerByHost
 from modules.notifySend import notify_send
+
+
 def downloadFiles():
     clipboard = pyperclip.paste()
     print(f"clipboard: {clipboard}")
@@ -23,23 +26,23 @@ def downloadFiles():
             if server is None:
                 print("[red]Server not found")
                 exit()
-            host= server[1]
+            host = server[1]
             ip = server[2]
             password = server[3].split("\n")[0]
             port = server[4].strip() if len(server) > 4 else 22
             addToClipBoardFile(password)
             PASSWORD = password
-            # Constructing the command
-            # command = f"sshpass -p {password} scp -P {port} -r {host}@{ip}:{clipboard} ."
-            # command = [
-            #     "sshpass", "-p", PASSWORD, "rsync", "-avz", "--progress",
-            #     f"--rsh=sshpass -p {PASSWORD} ssh -p {PORT}",
-            #     file_path, f"{USERNAME}@{HOST}:{REMOTE_PATH}{relative_path}"
-            # ]
             command = [
-                    "sshpass", "-p", PASSWORD, "scp", "-P", str(port), "-r",
-                    f"{host}@{ip}:{clipboard}", "."
-                    ]
+                "sshpass",
+                "-p",
+                PASSWORD,
+                "scp",
+                "-P",
+                str(port),
+                "-r",
+                f"{host}@{ip}:{clipboard}",
+                ".",
+            ]
             print(f"command: {command}")
             subprocess.run(command, check=True)
             notify_send(f"Downloading {clipboard}")
@@ -53,6 +56,8 @@ def downloadFiles():
             except subprocess.CalledProcessError as e:
                 print(f"Error during SCP transfer: {e}")
     else:
-        print("[red]Invalid path, go to server and copy path of the file to clipboard")
+        print(
+            "[red]Invalid path, go to server and copy path of the file \
+                to clipboard"
+        )
         exit()
-

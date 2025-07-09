@@ -1,20 +1,21 @@
 #!/usr/bin/python3
 
+from rich import print
+from rich.console import Console
+from rich.table import Table
+
 from modules.backups import backups
 from modules.connectToProject import connectToProject
 from modules.copyServerDataToClipboard import copyServerDataToClipboard
 from modules.downloadFiles import downloadFiles
 from modules.findProject import findProject
 from modules.server import server
-from rich import print
-from rich.console import Console
-from rich.table import Table
-
 from modules.uploadFiles import uploadFiles
 from modules.viewProjects import viewProjects
 
 if __name__ == "__main__":
     print("[green]Start script")
+
 
 def menu():
     table = Table(title="Choose an option")
@@ -63,4 +64,6 @@ def menu():
     else:
         print("[red]Invalid choice")
         exit()
+
+
 menu()

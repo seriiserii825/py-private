@@ -1,40 +1,51 @@
 import os
 import subprocess
-from watchdog.observers import Observer
-from watchdog.events import FileSystemEventHandler
 import time
+
 from rich import print
+from watchdog.events import FileSystemEventHandler
+from watchdog.observers import Observer
+
 from libs.buffer import addToClipBoard
 from modules.Projects import Projects
+
 
 def uploadFiles():
     project = Projects()
     project.isCurrentProject()
-    HOST = project.project['server_host']
-    PORT = project.project['server_port'] if project.project['server_port'] else 22
+    HOST = project.project["server_host"]
+    PORT = project.project["server_port"] if project.project["server_port"] else 22
     print(f"PORT: {PORT}")
-    USERNAME = project.project['server_login']
-    PASSWORD = project.project['server_password']
-    REMOTE_PATH = project.project['server_path']
-    IGNORE_PATTERNS = ".git|.vscode|node_modules|dist|__pycache__|yarn.lock|.idea|vendor"
+    USERNAME = project.project["server_login"]
+    PASSWORD = project.project["server_password"]
+    REMOTE_PATH = project.project["server_path"]
+    IGNORE_PATTERNS = (
+        ".git|.vscode|node_modules|dist|__pycache__|yarn.lock|.idea|vendor"
+    )
 
-    REMOTE_PATH = REMOTE_PATH if REMOTE_PATH.endswith('/') else REMOTE_PATH + '/'
+    REMOTE_PATH = REMOTE_PATH if REMOTE_PATH.endswith("/") else REMOTE_PATH + "/"
 
     addToClipBoard(PASSWORD)
 
     def notify_send(message):
         """Send a notification using notify-send."""
-        subprocess.run(['notify-send', message], check=True)
+        subprocess.run(["notify-send", message], check=True)
 
     def upload_file(file_path):
-        print(f'file_path: {file_path}')
+        print(f"file_path: {file_path}")
         """Upload a file to the remote server."""
         relative_path = os.path.relpath(file_path, ".")
         print(f"PORT upload_file: {PORT}")
         command = [
-            "sshpass", "-p", PASSWORD, "rsync", "-avz", "--progress",
+            "sshpass",
+            "-p",
+            PASSWORD,
+            "rsync",
+            "-avz",
+            "--progress",
             f"--rsh=sshpass -p {PASSWORD} ssh -p {PORT}",
-            file_path, f"{USERNAME}@{HOST}:{REMOTE_PATH}{relative_path}"
+            file_path,
+            f"{USERNAME}@{HOST}:{REMOTE_PATH}{relative_path}",
         ]
         # command = [
         #     "sshpass", "-p", PASSWORD, "rsync", "-avz", "--progress",
@@ -49,8 +60,14 @@ def uploadFiles():
         """Delete a file from the remote server."""
         relative_path = os.path.relpath(file_path, ".")
         command = [
-            "sshpass", "-p", PASSWORD, "ssh", "-p", str(PORT),
-            f"{USERNAME}@{HOST}", f"rm -f {REMOTE_PATH}{relative_path}"
+            "sshpass",
+            "-p",
+            PASSWORD,
+            "ssh",
+            "-p",
+            str(PORT),
+            f"{USERNAME}@{HOST}",
+            f"rm -f {REMOTE_PATH}{relative_path}",
         ]
         subprocess.run(command, check=True)
         print(f"Deleting {file_path} from {REMOTE_PATH}{relative_path}")
@@ -60,21 +77,27 @@ def uploadFiles():
         """Watch for file changes and upload/delete as needed."""
 
         def on_modified(self, event):
-            if not any([pattern in event.src_path for pattern in IGNORE_PATTERNS.split('|')]):
+            if not any(
+                [pattern in event.src_path for pattern in IGNORE_PATTERNS.split("|")]
+            ):
                 if event.is_directory:
                     return
                 print(f"Detected modification in {event.src_path}")
                 upload_file(event.src_path)
 
         def on_created(self, event):
-            if not any([pattern in event.src_path for pattern in IGNORE_PATTERNS.split('|')]):
+            if not any(
+                [pattern in event.src_path for pattern in IGNORE_PATTERNS.split("|")]
+            ):
                 if event.is_directory:
                     return
                 print(f"Detected creation of {event.src_path}")
                 upload_file(event.src_path)
 
         def on_deleted(self, event):
-            if not any([pattern in event.src_path for pattern in IGNORE_PATTERNS.split('|')]):
+            if not any(
+                [pattern in event.src_path for pattern in IGNORE_PATTERNS.split("|")]
+            ):
                 if event.is_directory:
                     return
                 print(f"Detected deletion of {event.src_path}")
@@ -104,22 +127,40 @@ def uploadFiles():
         dist_path = "dist"
         # remove dist on server
         command = [
-            "sshpass", "-p", PASSWORD, "ssh", "-p", str(PORT),
-            f"{USERNAME}@{HOST}", f"rm -rf {REMOTE_PATH}dist"
+            "sshpass",
+            "-p",
+            PASSWORD,
+            "ssh",
+            "-p",
+            str(PORT),
+            f"{USERNAME}@{HOST}",
+            f"rm -rf {REMOTE_PATH}dist",
         ]
         subprocess.run(command, check=True)
         command = [
-            "sshpass", "-p", PASSWORD, "rsync", "-avz", "--progress",
+            "sshpass",
+            "-p",
+            PASSWORD,
+            "rsync",
+            "-avz",
+            "--progress",
             f"--rsh=sshpass -p {PASSWORD} ssh -p {PORT}",
-            dist_path, f"{USERNAME}@{HOST}:{REMOTE_PATH}"
+            dist_path,
+            f"{USERNAME}@{HOST}:{REMOTE_PATH}",
         ]
         print(f"command: {command}")
         subprocess.run(command, check=True)
         # upload front-page on server
         command = [
-            "sshpass", "-p", PASSWORD, "rsync", "-avz", "--progress",
+            "sshpass",
+            "-p",
+            PASSWORD,
+            "rsync",
+            "-avz",
+            "--progress",
             f"--rsh=sshpass -p {PASSWORD} ssh -p {PORT}",
-            './functions.php', f"{USERNAME}@{HOST}:{REMOTE_PATH}/functions.php"
+            "./functions.php",
+            f"{USERNAME}@{HOST}:{REMOTE_PATH}/functions.php",
         ]
         subprocess.run(command, check=True)
         print(f"command: {command}")

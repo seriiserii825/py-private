@@ -1,5 +1,7 @@
-from modules.Projects import Projects
 from pyfzf.pyfzf import FzfPrompt
+
+from modules.Projects import Projects
+
 
 def copyServerDataToClipboard():
     fzf = FzfPrompt()
