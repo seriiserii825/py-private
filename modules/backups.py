@@ -22,7 +22,8 @@ def backups():
         if project["title"] == theme_name:
             vps = project["vps"]
             vps_list = getVps()
-            vps_item = next((item for item in vps_list if item["name"] == vps), None)
+            vps_item = next(
+                (item for item in vps_list if item["name"] == vps), None)
             print(f"vps_item: {vps_item}")
             if vps_item is None:
                 print(colored(f"VPS {vps} not found", "red"))
