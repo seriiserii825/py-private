@@ -15,4 +15,5 @@ def selectWpressFiles():
     wpress_files.sort(key=os.path.getmtime, reverse=True)
     wpress_files = [os.path.basename(file) for file in wpress_files]
     wpress_file = Select.select_one(wpress_files)
+    wpress_file = downloads_dir + "/" + wpress_file
     return os.path.join(wpress_file)
