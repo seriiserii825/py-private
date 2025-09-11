@@ -18,3 +18,4 @@ clean
 reggio
 vps9
 confagr
+centro
