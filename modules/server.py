@@ -5,6 +5,7 @@ from rich.console import Console
 from rich.panel import Panel
 from rich.table import Table
 
+from classes.utils.Select import Select
 from libs.buffer import addToClipBoard
 from utils.getVps import getVps
 
@@ -23,17 +24,13 @@ def server():
 def serverMenu():
     vps_list = getVps()
     server_names = [vps["name"] for vps in vps_list]
-    print(Panel("[blue]Choose a server by index"))
-    table = Table(title="Choose a server")
-    table.add_column("Index", style="magenta")
-    table.add_column("Server", justify="right", style="cyan", no_wrap=True)
-    for i, server_name in enumerate(server_names):
-        table.add_row(str(i), server_name)
-    console = Console()
-    console.print(table)
-    index = int(input("Enter the index: "))
-    print(Panel(f"Index: [green]{index}"))
+    choice = Select.select_with_fzf(server_names + ["Exit"])
+    print(f"choice: {choice}")
+    if choice[0] == "Exit":
+        print("[blue]Goodbye, have a nice day! 👋")
+        exit()
+    index = server_names.index(choice)
     if index < 0 or index >= len(server_names):
-        print(Panel(f"[red]Invalid index"))
+        print(Panel("[red]Invalid index"))
         serverMenu()
     return vps_list[index]
