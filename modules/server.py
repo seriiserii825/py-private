@@ -23,11 +23,11 @@ def server():
 
 def serverMenu():
     vps_list = getVps()
-    print(f"vps_list: {vps_list}")
+    # print(f"vps_list: {vps_list}")
     server_names = [vps["name"] for vps in vps_list]
-    print(f"server_names: {server_names}")
+    # print(f"server_names: {server_names}")
     choice = Select.select_with_fzf(server_names + ["Exit"])
-    print(f"choice: {choice}")
+    # print(f"choice: {choice}")
     if choice[0] == "Exit":
         print("[blue]Goodbye, have a nice day! 👋")
         exit()
