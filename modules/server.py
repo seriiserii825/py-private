@@ -1,4 +1,5 @@
 import os
+import subprocess
 
 from rich import print
 from rich.console import Console
@@ -7,6 +8,7 @@ from rich.table import Table
 
 from classes.utils.Select import Select
 from libs.buffer import addToClipBoard
+from modules.notifySend import notify_send
 from utils.getVps import getVps
 
 
@@ -16,9 +18,20 @@ def server():
     password = choosed_server["password"]
     port = choosed_server["port"]
     addToClipBoard(password)
-    command = f"ssh -p {port} {choosed_server['user']}@{choosed_server['ip']}"
-    print(Panel(f"Command: [green]{command}"))
-    os.system(command)
+    notify_send("Server password copied to clipboard 📋")
+    user = choosed_server["user"]
+    vps = choosed_server
+    ip = vps["ip"]
+
+    cmd = [
+        "sshpass", "-p", password,
+        "ssh", "-t", "-p", str(port),
+        f'{user}@{ip}',
+    ]
+    subprocess.run(cmd)  # noqa: F821
+    # command = f"ssh -p {port} {choosed_server['user']}@{choosed_server['ip']}"
+    # print(Panel(f"Command: [green]{command}"))
+    # os.system(command)
 
 
 def serverMenu():
