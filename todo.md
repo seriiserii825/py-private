@@ -28,7 +28,6 @@ bcm
 elleffe
 ttcar
 agricosta
-cecchini path
 maxkebab
 virmec
 insurance
