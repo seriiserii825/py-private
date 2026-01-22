@@ -29,7 +29,6 @@ elleffe
 ttcar
 agricosta
 maxkebab
-virmec
 insurance
 sirio
 sondaggio
