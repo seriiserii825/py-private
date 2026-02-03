@@ -47,3 +47,4 @@ vps8webmaster
 virmec uddate
 borgoluce
 vr-sistemi
+infotel
