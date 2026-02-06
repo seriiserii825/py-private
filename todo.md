@@ -28,7 +28,6 @@ bcm
 elleffe
 ttcar
 agricosta
-maxkebab
 insurance
 sirio
 sondaggio
