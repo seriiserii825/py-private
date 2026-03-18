@@ -54,3 +54,4 @@ argroup
 otp
 fiamma
 iteco
+studio rostellato
