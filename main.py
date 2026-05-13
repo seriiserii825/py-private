@@ -1,5 +1,8 @@
 #!/usr/bin/python3
 
+import os
+import sys
+
 from rich import print
 from rich.console import Console
 from rich.table import Table
@@ -12,6 +15,7 @@ from modules.findProject import findProject
 from modules.server import server
 from modules.uploadFiles import uploadFiles
 from modules.viewProjects import viewProjects
+from utils.checkCsvFiles import checkCsvFiles
 
 if __name__ == "__main__":
     print("[green]Start script")
@@ -66,4 +70,5 @@ def menu():
         exit()
 
 
+checkCsvFiles()
 menu()
