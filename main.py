@@ -7,6 +7,8 @@ from rich import print
 from rich.console import Console
 from rich.table import Table
 
+from modules.allProjectsToFile import allProjectsToFile
+from modules.findAllProject import findAllProject
 from modules.backups import backups
 from modules.connectToProject import connectToProject
 from modules.copyServerDataToClipboard import copyServerDataToClipboard
@@ -33,6 +35,8 @@ def menu():
     table.add_row("5", "[blue]Upload files")
     table.add_row("6", "[green]Download files")
     table.add_row("7", "[blue]Copy server data to clipboard")
+    table.add_row("9", "[cyan]All projects to file")
+    table.add_row("9.1", "[cyan]Find in all projects")
     table.add_row("8", "[exit]Exit")
     console = Console()
     console.print(table)
@@ -62,6 +66,12 @@ def menu():
     elif input_user == "7":
         copyServerDataToClipboard()
         exit()
+    elif input_user == "9":
+        allProjectsToFile()
+        menu()
+    elif input_user == "9.1":
+        findAllProject()
+        menu()
     elif input_user == "8":
         print("[red]Exit")
         exit()
