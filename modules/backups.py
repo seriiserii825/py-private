@@ -3,6 +3,7 @@ import os
 from termcolor import colored
 
 from libs.buffer import addToClipBoard
+from modules.notifySend import notify_send
 from utils.getProjects import getProjects
 from utils.getVps import getVps
 from utils.selectWpressFile import selectWpressFiles
@@ -38,11 +39,15 @@ def backups():
             path_arr = vps_path.split("/")
             path_to_aimwp = "/".join(path_arr[:-2]) + "/ai1wm-backups"
             vps_url = f"{vps_item['user']}@{vps_item['ip']}"
-            # vps_command = f"rsync -avP '{wpress_file}' {vps_url}:{vps_path}"
             addToClipBoard(vps_pass)
-            vps_command = f"rsync -avP -e 'ssh -p {vps_port}' \
-                    '{wpress_file}' {vps_url}:{path_to_aimwp}"
+            vps_command = (
+                f"sshpass -p '{vps_pass}' rsync -avP "
+                f"-e 'ssh -p {vps_port}' "
+                f"'{wpress_file}' {vps_url}:{path_to_aimwp}"
+            )
             print(colored(f"VPS command: {vps_command}", "blue"))
             os.system(vps_command)
             print(colored("File copied", "green"))
+            notify_send(
+                f"Copied {os.path.basename(wpress_file)} to {path_to_aimwp}")
             break
