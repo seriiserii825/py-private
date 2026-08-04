@@ -6,6 +6,7 @@ from libs.buffer import addToClipBoard
 from modules.notifySend import notify_send
 from utils.getProjectsFromCsv import getProjectsFromCsv
 from utils.getVps import getVps
+from utils.reportSshError import reportSshError
 
 fzf = FzfPrompt()
 
@@ -30,7 +31,8 @@ def connectToProject():
                         f'{vps["user"]}@{vps["ip"]}',
                         f'cd {new_path} ; bash --login'
                     ]
-                    subprocess.run(cmd)
+                    result = subprocess.run(cmd)
+                    reportSshError(result.returncode)
                     # command = f'ssh -t -p {server_port} \
                     #         {vps["user"]}@{vps["ip"]} \
                     #         "cd {new_path} ; bash --login" '

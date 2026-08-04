@@ -10,6 +10,7 @@ from classes.utils.Select import Select
 from libs.buffer import addToClipBoard
 from modules.notifySend import notify_send
 from utils.getVps import getVps
+from utils.reportSshError import reportSshError
 
 
 def server():
@@ -28,7 +29,8 @@ def server():
         "ssh", "-t", "-p", str(port),
         f'{user}@{ip}',
     ]
-    subprocess.run(cmd)  # noqa: F821
+    result = subprocess.run(cmd)
+    reportSshError(result.returncode)
     # command = f"ssh -p {port} {choosed_server['user']}@{choosed_server['ip']}"
     # print(Panel(f"Command: [green]{command}"))
     # os.system(command)
