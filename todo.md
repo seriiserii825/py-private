@@ -25,3 +25,5 @@ sicurove
 gismec
 foresteria
 hydra
+pull all
+vps1webmaster
