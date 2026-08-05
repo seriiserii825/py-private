@@ -10,6 +10,7 @@ from libs.selectWithFzf import selectWithFzf
 from modules.Projects import Projects
 from modules.notifySend import notify_send
 from utils.getProjectsFromCsv import getProjectsFromCsv
+from utils.getVps import getVps
 
 console = Console()
 
@@ -48,6 +49,23 @@ def _select_project():
     p.getProjectFromCsv()
     p.getServerFromCsv()
     return p
+
+
+def _select_server():
+    vps_list = getVps()
+    names = [vps["name"] for vps in vps_list]
+    selected_name = _fzf(names)
+    if selected_name is None:
+        return None
+    return next(vps for vps in vps_list if vps["name"] == selected_name)
+
+
+def _ask_remote_path():
+    path = input("Enter remote path on server: ").strip()
+    if not path:
+        print("[red]Remote path cannot be empty")
+        return None
+    return path
 
 
 def _build_remote_path(base_path: str):
@@ -120,20 +138,41 @@ def pushFiles():
         print(f"[red]Local path does not exist: {local_path}")
         return
 
-    print("\n[cyan]Select project:[/cyan]")
-    project = _select_project()
-    if project is None:
+    print("\n[cyan]Push to project or server?[/cyan]")
+    target_type = _fzf(["project", "server"])
+    if target_type is None:
         return
 
-    HOST = project.project["server_host"]
-    PORT = project.project["server_port"]
-    USERNAME = project.project["server_login"]
-    PASSWORD = project.project["server_password"]
-    BASE_PATH = project.project["server_path"]
+    if target_type == "project":
+        print("\n[cyan]Select project:[/cyan]")
+        project = _select_project()
+        if project is None:
+            return
 
-    remote_path = _build_remote_path(BASE_PATH)
-    if remote_path is None:
-        return
+        HOST = project.project["server_host"]
+        PORT = project.project["server_port"]
+        USERNAME = project.project["server_login"]
+        PASSWORD = project.project["server_password"]
+        BASE_PATH = project.project["server_path"]
+
+        remote_path = _build_remote_path(BASE_PATH)
+        if remote_path is None:
+            return
+    else:
+        print("\n[cyan]Select server:[/cyan]")
+        vps = _select_server()
+        if vps is None:
+            return
+
+        HOST = vps["ip"]
+        PORT = vps["port"]
+        USERNAME = vps["user"]
+        PASSWORD = vps["password"]
+
+        remote_path = _ask_remote_path()
+        if remote_path is None:
+            return
+
     if not remote_path.endswith("/"):
         remote_path += "/"
 
