@@ -13,6 +13,7 @@ from modules.backups import backups
 from modules.connectToProject import connectToProject
 from modules.copyServerDataToClipboard import copyServerDataToClipboard
 from modules.downloadFiles import downloadFiles
+from modules.downloadFromServer import downloadFromServer
 from modules.findProject import findProject
 from modules.server import server
 from modules.pushFiles import pushFiles
@@ -40,9 +41,10 @@ def menu():
     table.add_row("7", "[blue]Copy server data to clipboard")
     table.add_row("9", "[cyan]All projects to file")
     table.add_row("9.1", "[cyan]Find in all projects")
-    table.add_row("10", "[blue]Push files/folder to server (rsync)")
+    table.add_row("10", "[blue]Push files/folder to project or server (rsync)")
     table.add_row("11", "[cyan]Recent modified files on server")
     table.add_row("12", "[green]Pull files/folder from server (rsync)")
+    table.add_row("13", "[green]Download from server (rsync)")
     table.add_row("8", "[exit]Exit")
     console = Console()
     console.print(table)
@@ -86,6 +88,9 @@ def menu():
         menu()
     elif input_user == "12":
         pullFiles()
+        menu()
+    elif input_user == "13":
+        downloadFromServer()
         menu()
     elif input_user == "8":
         print("[red]Exit")
