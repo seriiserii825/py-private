@@ -43,7 +43,7 @@ def menu():
     table.add_row("9.1", "[cyan]Find in all projects")
     table.add_row("10", "[blue]Push files/folder to project or server (rsync)")
     table.add_row("11", "[cyan]Recent modified files on server")
-    table.add_row("12", "[green]Pull files/folder from server (rsync)")
+    table.add_row("12", "[green]Pull files/folder from project (rsync)")
     table.add_row("13", "[green]Download from server (rsync)")
     table.add_row("8", "[exit]Exit")
     console = Console()

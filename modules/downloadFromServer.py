@@ -25,11 +25,19 @@ def downloadFromServer():
     USERNAME = vps["user"]
     PASSWORD = vps["password"]
 
+    print(
+        "\n[yellow]Add / at the end of the path for a folder, "
+        "omit it for a single file[/yellow]"
+    )
     remote_path = _ask_remote_path()
     if remote_path is None:
         return
 
     kind = "folder" if remote_path.endswith("/") else "file"
+    # rsync treats a trailing "/" on the source as "sync contents only";
+    # strip it so the folder itself is copied into Downloads instead of
+    # its contents being merged loose into the destination.
+    source_path = remote_path.rstrip("/") if kind == "folder" else remote_path
 
     os.makedirs(DOWNLOADS_DIR, exist_ok=True)
 
@@ -47,7 +55,7 @@ def downloadFromServer():
         "sshpass", "-p", PASSWORD,
         "rsync", "-av", "--progress",
         f"--rsh=sshpass -p {PASSWORD} ssh -p {PORT}",
-        f"{USERNAME}@{HOST}:{remote_path}",
+        f"{USERNAME}@{HOST}:{source_path}",
         DOWNLOADS_DIR + "/",
     ]
 
