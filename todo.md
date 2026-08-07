@@ -29,3 +29,4 @@ pull all
 vps1webmaster
 vps1host
 vps10test
+algor
