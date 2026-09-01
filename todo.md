@@ -31,3 +31,4 @@ vps1host
 vps10test
 algor
 manitoba
+vps10host
