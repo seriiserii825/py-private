@@ -32,3 +32,4 @@ vps10test
 algor
 manitoba
 vps10host
+dolomiti-di-brenta
