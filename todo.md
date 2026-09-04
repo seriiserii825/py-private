@@ -33,3 +33,4 @@ algor
 manitoba
 vps10host
 dolomiti-di-brenta
+wrap studio
