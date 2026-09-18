@@ -89,6 +89,7 @@ def recentFiles():
 
     result = subprocess.run(
         ["sshpass", "-p", PASSWORD, "ssh", "-p", str(PORT),
+         "-o", "StrictHostKeyChecking=accept-new",
          f"{USERNAME}@{HOST}", find_cmd],
         capture_output=True, text=True
     )

@@ -205,7 +205,7 @@ def pushFiles():
     command = [
         "sshpass", "-p", PASSWORD,
         "rsync", "-av", "--progress",
-        f"--rsh=sshpass -p {PASSWORD} ssh -p {PORT}",
+        f"--rsh=sshpass -p {PASSWORD} ssh -p {PORT} -o StrictHostKeyChecking=accept-new",
         *delete_flag,
         source,
         f"{USERNAME}@{HOST}:{remote_path}",

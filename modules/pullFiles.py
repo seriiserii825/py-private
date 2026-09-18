@@ -74,7 +74,7 @@ def pullFiles():
     command = [
         "sshpass", "-p", PASSWORD,
         "rsync", "-av", "--progress",
-        f"--rsh=sshpass -p {PASSWORD} ssh -p {PORT}",
+        f"--rsh=sshpass -p {PASSWORD} ssh -p {PORT} -o StrictHostKeyChecking=accept-new",
         *delete_flag,
         f"{USERNAME}@{HOST}:{source}",
         local_dest,

@@ -28,6 +28,7 @@ def connectToProject():
                     cmd = [
                         "sshpass", "-p", password,
                         "ssh", "-t", "-p", str(server_port),
+                        "-o", "StrictHostKeyChecking=accept-new",
                         f'{vps["user"]}@{vps["ip"]}',
                         f'cd {new_path} ; bash --login'
                     ]

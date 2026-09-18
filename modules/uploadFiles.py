@@ -43,7 +43,7 @@ def uploadFiles():
             "rsync",
             "-avz",
             "--progress",
-            f"--rsh=sshpass -p {PASSWORD} ssh -p {PORT}",
+            f"--rsh=sshpass -p {PASSWORD} ssh -p {PORT} -o StrictHostKeyChecking=accept-new",
             file_path,
             f"{USERNAME}@{HOST}:{REMOTE_PATH}{relative_path}",
         ]
@@ -66,6 +66,8 @@ def uploadFiles():
             "ssh",
             "-p",
             str(PORT),
+            "-o",
+            "StrictHostKeyChecking=accept-new",
             f"{USERNAME}@{HOST}",
             f"rm -f {REMOTE_PATH}{relative_path}",
         ]
@@ -133,6 +135,8 @@ def uploadFiles():
             "ssh",
             "-p",
             str(PORT),
+            "-o",
+            "StrictHostKeyChecking=accept-new",
             f"{USERNAME}@{HOST}",
             f"rm -rf {REMOTE_PATH}dist",
         ]
@@ -144,7 +148,7 @@ def uploadFiles():
             "rsync",
             "-avz",
             "--progress",
-            f"--rsh=sshpass -p {PASSWORD} ssh -p {PORT}",
+            f"--rsh=sshpass -p {PASSWORD} ssh -p {PORT} -o StrictHostKeyChecking=accept-new",
             dist_path,
             f"{USERNAME}@{HOST}:{REMOTE_PATH}",
         ]
@@ -158,7 +162,7 @@ def uploadFiles():
             "rsync",
             "-avz",
             "--progress",
-            f"--rsh=sshpass -p {PASSWORD} ssh -p {PORT}",
+            f"--rsh=sshpass -p {PASSWORD} ssh -p {PORT} -o StrictHostKeyChecking=accept-new",
             "./functions.php",
             f"{USERNAME}@{HOST}:{REMOTE_PATH}/functions.php",
         ]

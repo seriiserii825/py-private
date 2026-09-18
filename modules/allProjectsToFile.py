@@ -23,7 +23,7 @@ def allProjectsToFile():
                 [
                     "sshpass", "-p", srv["password"],
                     "ssh", "-p", str(srv["port"]),
-                    "-o", "StrictHostKeyChecking=no",
+                    "-o", "StrictHostKeyChecking=accept-new",
                     "-o", "ConnectTimeout=10",
                     f"{srv['user']}@{srv['ip']}",
                     "ls ~/web",

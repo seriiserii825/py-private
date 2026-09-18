@@ -54,7 +54,7 @@ def downloadFromServer():
     command = [
         "sshpass", "-p", PASSWORD,
         "rsync", "-av", "--progress",
-        f"--rsh=sshpass -p {PASSWORD} ssh -p {PORT}",
+        f"--rsh=sshpass -p {PASSWORD} ssh -p {PORT} -o StrictHostKeyChecking=accept-new",
         f"{USERNAME}@{HOST}:{source_path}",
         DOWNLOADS_DIR + "/",
     ]

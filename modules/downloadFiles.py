@@ -39,6 +39,8 @@ def downloadFiles():
                 "scp",
                 "-P",
                 str(port),
+                "-o",
+                "StrictHostKeyChecking=accept-new",
                 "-r",
                 f"{host}@{ip}:{clipboard}",
                 ".",

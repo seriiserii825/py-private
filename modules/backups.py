@@ -42,7 +42,7 @@ def backups():
             addToClipBoard(vps_pass)
             vps_command = (
                 f"sshpass -p '{vps_pass}' rsync -avP "
-                f"-e 'ssh -p {vps_port}' "
+                f"-e 'ssh -p {vps_port} -o StrictHostKeyChecking=accept-new' "
                 f"'{wpress_file}' {vps_url}:{path_to_aimwp}"
             )
             print(colored(f"VPS command: {vps_command}", "blue"))

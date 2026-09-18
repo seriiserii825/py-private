@@ -27,6 +27,7 @@ def server():
     cmd = [
         "sshpass", "-p", password,
         "ssh", "-t", "-p", str(port),
+        "-o", "StrictHostKeyChecking=accept-new",
         f'{user}@{ip}',
     ]
     result = subprocess.run(cmd)
