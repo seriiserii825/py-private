@@ -3,6 +3,7 @@ import os
 from rich import print
 from rich.console import Console
 
+from py_libs.FilesHandle import FilesHandle
 from py_libs.InputValidator import InputValidator
 from py_libs.Print import Print
 from py_libs.Rsync import Rsync
@@ -21,8 +22,7 @@ def _select_local_destination():
         return cwd
 
     path = InputValidator.get_string("Enter full local destination path: ")
-    os.makedirs(path, exist_ok=True)
-    return path
+    return FilesHandle().ensure_dir(path)
 
 
 def pullFiles():

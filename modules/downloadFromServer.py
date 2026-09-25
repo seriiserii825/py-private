@@ -3,6 +3,7 @@ import os
 from rich import print
 from rich.console import Console
 
+from py_libs.FilesHandle import FilesHandle
 from py_libs.Print import Print
 from py_libs.Rsync import Rsync
 
@@ -41,7 +42,7 @@ def downloadFromServer():
     # its contents being merged loose into the destination.
     source_path = remote_path.rstrip("/") if kind == "folder" else remote_path
 
-    os.makedirs(DOWNLOADS_DIR, exist_ok=True)
+    FilesHandle().ensure_dir(DOWNLOADS_DIR)
 
     console.print(
         f"\n[green]Remote ({kind}):[/green] {USERNAME}@{HOST}:{remote_path}"
