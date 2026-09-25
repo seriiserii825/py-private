@@ -53,3 +53,7 @@ servers.csv
 uv.lock
 FileZilla.xml
 all-projects.csv
+list.csv.sha256
+servers.csv.sha256
+FileZilla.xml.sha256
+all-projects.csv.sha256
