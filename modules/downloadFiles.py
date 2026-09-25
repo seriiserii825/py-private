@@ -3,6 +3,8 @@ import subprocess
 import pyperclip
 from rich import print
 
+from py_libs.Print import Print
+
 from libs.buffer import addToClipBoardFile
 from modules.getHostByProjectName import getHostByProjectName
 from modules.getServerByHost import getServerByHost
@@ -19,12 +21,12 @@ def downloadFiles():
             print(f"Project name: {project_name}")
             host_name = getHostByProjectName(project_name)
             if host_name is None:
-                print("[red]Project not found")
+                Print.error("Project not found")
                 exit()
             server = getServerByHost(host_name)
             print(f"server: {server}")
             if server is None:
-                print("[red]Server not found")
+                Print.error("Server not found")
                 exit()
             host = server[1]
             ip = server[2]

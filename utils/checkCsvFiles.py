@@ -3,7 +3,7 @@ import shutil
 import subprocess
 import sys
 
-from rich import print
+from py_libs.Print import Print
 
 
 def _is_arch_linux():
@@ -17,14 +17,14 @@ def _is_arch_linux():
 def checkCsvFiles():
     if not shutil.which("sshpass"):
         if _is_arch_linux() and shutil.which("pacman"):
-            print("[yellow]sshpass not found — installing via pacman...")
+            Print.warning("sshpass not found — installing via pacman...")
             result = subprocess.run(["sudo", "pacman", "-S", "--noconfirm", "sshpass"])
             if result.returncode != 0 or not shutil.which("sshpass"):
-                print("[red]Failed to install sshpass. Install it manually: sudo pacman -S sshpass")
+                Print.error("Failed to install sshpass. Install it manually: sudo pacman -S sshpass")
                 sys.exit(1)
-            print("[green]sshpass installed successfully.")
+            Print.success("sshpass installed successfully.")
         else:
-            print("[red]sshpass is not installed. Install it with: sudo pacman -S sshpass")
+            Print.error("sshpass is not installed. Install it with: sudo pacman -S sshpass")
             sys.exit(1)
 
     ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -32,5 +32,5 @@ def checkCsvFiles():
     missing = [f for f in required if not os.path.isfile(os.path.join(ROOT_DIR, f))]
     if missing:
         for f in missing:
-            print(f"[red]Missing required file: {f}")
+            Print.error(f"Missing required file: {f}")
         sys.exit(1)

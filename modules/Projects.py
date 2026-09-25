@@ -2,10 +2,9 @@ import os
 import time
 from pathlib import Path
 
-from rich import print
-
 from libs.buffer import addToClipBoard
 from py_libs.CsvFile import CsvFile
+from py_libs.Print import Print
 
 
 class Projects:
@@ -42,7 +41,7 @@ class Projects:
 
     def copyServerToClipboard(self, server):
         addToClipBoard(f"{server['password']}")
-        print("[green]Password copied to clipboard")
+        Print.success("Password copied to clipboard")
         time.sleep(3)  # Give user time to paste the password before overwriting
         if server["port"] == 22:
             addToClipBoard(f"ssh {server['login']}@{server['host']}")
@@ -50,7 +49,7 @@ class Projects:
             addToClipBoard(
                 f"ssh -p {server['port']} {server['login']}@{server['host']}"
             )
-        print("[green]User and host copied to clipboard")
+        Print.success("User and host copied to clipboard")
 
     def isCurrentProject(self):
         current_dir = os.getcwd()
@@ -67,13 +66,13 @@ class Projects:
                 self.project["server_name"] = row["vps"]
                 self.project["server_path"] = row["path"]
         if not self.project:
-            print("Project not found")
+            Print.error("Project not found")
             exit()
         elif self.project["name"] != self.project_name:
-            print("Project not found")
+            Print.error("Project not found")
             exit()
         else:
-            print(f"Project found: [green]{self.project['name']}")
+            Print.success(f"Project found: {self.project['name']}")
             return self.project
 
     def getServersFromCsv(self):
@@ -92,7 +91,7 @@ class Projects:
                 self.project["server_port"] = (
                     row["port"] if row.get("port") else 22
                 )
-                print(f"Server found: [green]{self.project['server_name']}")
+                Print.success(f"Server found: {self.project['server_name']}")
         if not self.project["server_login"]:
-            print("[red]Server not found")
+            Print.error("Server not found")
             exit()

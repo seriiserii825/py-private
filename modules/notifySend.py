@@ -1,6 +1,6 @@
-import subprocess
+from py_libs.Notification import Notification
 
 
 def notify_send(message):
     """Send a notification using notify-send."""
-    subprocess.run(["notify-send", message], check=True)
+    Notification("py-private", message).notify()

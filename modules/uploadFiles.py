@@ -6,7 +6,10 @@ from rich import print
 from watchdog.events import FileSystemEventHandler
 from watchdog.observers import Observer
 
+from py_libs.Print import Print
+
 from libs.buffer import addToClipBoard
+from modules.notifySend import notify_send
 from modules.Projects import Projects
 
 
@@ -26,10 +29,6 @@ def uploadFiles():
     REMOTE_PATH = REMOTE_PATH if REMOTE_PATH.endswith("/") else REMOTE_PATH + "/"
 
     addToClipBoard(PASSWORD)
-
-    def notify_send(message):
-        """Send a notification using notify-send."""
-        subprocess.run(["notify-send", message], check=True)
 
     def upload_file(file_path):
         print(f"file_path: {file_path}")
@@ -124,7 +123,7 @@ def uploadFiles():
         subprocess.run(["yarn", "install"], check=True)
         yarn_build = subprocess.run(["yarn", "build"], check=True)
         if yarn_build.returncode != 0:
-            print("[red]Failed to build the project.")
+            Print.error("Failed to build the project.")
             exit(1)
         dist_path = "dist"
         # remove dist on server

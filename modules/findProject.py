@@ -1,5 +1,4 @@
-from rich.console import Console
-from rich.table import Table
+from py_libs.Menu import Menu
 
 from utils.getProjectsFromCsv import getProjectsFromCsv
 
@@ -13,13 +12,10 @@ def findProject():
         if project_name.lower() in project["title"].lower()
     ]
     if len(found_projects) > 0:
-        table = Table(title="Found Projects")
-        table.add_column("Title", style="magenta")
-        table.add_column("VPS", style="green")
-        table.add_column("Path", style="blue")
-        for project in found_projects:
-            table.add_row(project["title"], project["vps"], project["path"])
-        console = Console()
-        console.print(table)
+        rows = [
+            [f"[magenta]{p['title']}", f"[green]{p['vps']}", f"[blue]{p['path']}"]
+            for p in found_projects
+        ]
+        Menu.display("Found Projects", ["Title", "VPS", "Path"], rows)
     else:
         print(f"No projects found with the name '{project_name}'.")

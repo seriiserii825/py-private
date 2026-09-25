@@ -6,6 +6,7 @@ from rich.console import Console
 from rich.panel import Panel
 from rich.table import Table
 
+from py_libs.Print import Print
 from py_libs.Select import Select
 from libs.buffer import addToClipBoard
 from modules.notifySend import notify_send
@@ -45,7 +46,7 @@ def serverMenu():
     choice = Select.select_with_fzf(server_names + ["Exit"])
     # print(f"choice: {choice}")
     if choice[0] == "Exit":
-        print("[blue]Goodbye, have a nice day! 👋")
+        Print.info("Goodbye, have a nice day! 👋")
         exit()
     index = server_names.index(choice[0])
     if index < 0 or index >= len(server_names):

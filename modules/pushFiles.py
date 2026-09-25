@@ -5,6 +5,8 @@ import sys
 from rich import print
 from rich.console import Console
 
+from py_libs.Print import Print
+
 from libs.chooseDir import chooseDir
 from libs.selectWithFzf import selectWithFzf
 from modules.Projects import Projects
@@ -63,7 +65,7 @@ def _select_server():
 def _ask_remote_path():
     path = input("Enter remote path on server: ").strip()
     if not path:
-        print("[red]Remote path cannot be empty")
+        Print.error("Remote path cannot be empty")
         return None
     return path
 
@@ -113,7 +115,7 @@ def _select_local_source(kind: str):
         else:
             items = sorted(f for f in os.listdir(cwd) if os.path.isfile(os.path.join(cwd, f)))
             if not items:
-                print("[red]No files found in current directory")
+                Print.error("No files found in current directory")
                 return None
             selected = _fzf(items)
             if selected is None:
@@ -135,7 +137,7 @@ def pushFiles():
     if local_path is None:
         return
     if not os.path.exists(local_path):
-        print(f"[red]Local path does not exist: {local_path}")
+        Print.error(f"Local path does not exist: {local_path}")
         return
 
     print("\n[cyan]Push to project or server?[/cyan]")
@@ -199,7 +201,7 @@ def pushFiles():
 
     confirm = input("\nProceed? (y/n): ").strip().lower()
     if confirm != "y":
-        print("[yellow]Cancelled")
+        Print.warning("Cancelled")
         return
 
     command = [
@@ -214,4 +216,4 @@ def pushFiles():
     print(f"\n[dim]{' '.join(str(c) for c in command)}[/dim]\n")
     subprocess.run(command, check=True)
     notify_send(f"Pushed {source} → {HOST}:{remote_path}")
-    print(f"[green]Done: {source} → {HOST}:{remote_path}")
+    Print.success(f"Done: {source} → {HOST}:{remote_path}")

@@ -4,6 +4,8 @@ import subprocess
 from rich import print
 from rich.console import Console
 
+from py_libs.Print import Print
+
 from modules.notifySend import notify_send
 from modules.pushFiles import _ask_remote_path, _select_server
 
@@ -48,7 +50,7 @@ def downloadFromServer():
 
     confirm = input("\nProceed? (y/n): ").strip().lower()
     if confirm != "y":
-        print("[yellow]Cancelled")
+        Print.warning("Cancelled")
         return
 
     command = [
@@ -62,4 +64,4 @@ def downloadFromServer():
     print(f"\n[dim]{' '.join(str(c) for c in command)}[/dim]\n")
     subprocess.run(command, check=True)
     notify_send(f"Downloaded {HOST}:{remote_path} → {DOWNLOADS_DIR}")
-    print(f"[green]Done: {HOST}:{remote_path} → {DOWNLOADS_DIR}")
+    Print.success(f"Done: {HOST}:{remote_path} → {DOWNLOADS_DIR}")

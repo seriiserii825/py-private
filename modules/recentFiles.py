@@ -3,7 +3,9 @@ import sys
 
 from rich import print
 from rich.console import Console
-from rich.table import Table
+
+from py_libs.Menu import Menu
+from py_libs.Print import Print
 
 from libs.selectWithFzf import selectWithFzf
 from modules.Projects import Projects
@@ -97,19 +99,20 @@ def recentFiles():
     lines = [l for l in result.stdout.strip().splitlines() if l]
 
     if not lines:
-        print(f"[yellow]No files modified in the last {minutes} minutes.")
+        Print.warning(f"No files modified in the last {minutes} minutes.")
         return
 
-    table = Table(title=f"Modified in last {minutes} min — {HOST}:{search_path}")
-    table.add_column("Date & Time", style="cyan", no_wrap=True)
-    table.add_column("Path", style="green")
-
+    rows = []
     for line in lines:
         parts = line.split("  ", 1)
         if len(parts) == 2:
-            table.add_row(parts[0].strip(), parts[1].strip())
+            rows.append([f"[cyan]{parts[0].strip()}", f"[green]{parts[1].strip()}"])
         else:
-            table.add_row("", line)
+            rows.append(["", f"[green]{line}"])
 
-    console.print(table)
+    Menu.display(
+        f"Modified in last {minutes} min — {HOST}:{search_path}",
+        ["Date & Time", "Path"],
+        rows,
+    )
     print(f"\n[dim]Total: {len(lines)} file(s)[/dim]")

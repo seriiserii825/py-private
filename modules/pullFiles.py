@@ -4,6 +4,9 @@ import subprocess
 from rich import print
 from rich.console import Console
 
+from py_libs.InputValidator import InputValidator
+from py_libs.Print import Print
+
 from modules.notifySend import notify_send
 from modules.pushFiles import _build_remote_path, _select_project
 
@@ -14,13 +17,10 @@ def _select_local_destination():
     cwd = os.getcwd()
     console.print(f"\n[cyan]Current directory:[/cyan] {cwd}")
 
-    use_default = input(
-        "Download into current directory? (y/n, default y): "
-    ).strip().lower()
-    if use_default in ("", "y"):
+    if InputValidator.confirm("Download into current directory?"):
         return cwd
 
-    path = input("Enter full local destination path: ").strip()
+    path = InputValidator.get_string("Enter full local destination path: ")
     os.makedirs(path, exist_ok=True)
     return path
 
@@ -68,7 +68,7 @@ def pullFiles():
 
     confirm = input("\nProceed? (y/n): ").strip().lower()
     if confirm != "y":
-        print("[yellow]Cancelled")
+        Print.warning("Cancelled")
         return
 
     command = [
@@ -83,4 +83,4 @@ def pullFiles():
     print(f"\n[dim]{' '.join(str(c) for c in command)}[/dim]\n")
     subprocess.run(command, check=True)
     notify_send(f"Pulled {HOST}:{source} → {local_dest}")
-    print(f"[green]Done: {HOST}:{source} → {local_dest}")
+    Print.success(f"Done: {HOST}:{source} → {local_dest}")
