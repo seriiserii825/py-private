@@ -1,10 +1,9 @@
-import pyperclip as pc
-
+from py_libs.Clipboard import Clipboard
 from py_libs.Command import Command
 
 
 def addToClipBoard(text):
-    pc.copy(text.strip())
+    Clipboard.write(text.strip())
 
 
 def addToClipBoardFile(file):
@@ -15,5 +14,4 @@ def addToClipBoardFile(file):
 
 
 def getFromClipBoard():
-    text = pc.paste()
-    return text
+    return Clipboard.read()

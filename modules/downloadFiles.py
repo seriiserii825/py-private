@@ -1,18 +1,17 @@
 import subprocess
 
-import pyperclip
 from rich import print
 
 from py_libs.Print import Print
 
-from libs.buffer import addToClipBoardFile
+from libs.buffer import addToClipBoardFile, getFromClipBoard
 from modules.getHostByProjectName import getHostByProjectName
 from modules.getServerByHost import getServerByHost
 from modules.notifySend import notify_send
 
 
 def downloadFiles():
-    clipboard = pyperclip.paste()
+    clipboard = getFromClipBoard()
     print(f"clipboard: {clipboard}")
     if clipboard.startswith("/home/"):
         conting_segments = clipboard.split("/")
@@ -60,8 +59,8 @@ def downloadFiles():
             except subprocess.CalledProcessError as e:
                 print(f"Error during SCP transfer: {e}")
     else:
-        print(
-            "[red]Invalid path, go to server and copy path of the file \
-                to clipboard"
+        Print.error(
+            "Invalid path, go to server and copy path of the file "
+            "to clipboard"
         )
         exit()
