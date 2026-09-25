@@ -1,6 +1,7 @@
 import os
 
 from py_libs.Print import Print
+from py_libs.Rsync import Rsync
 
 from libs.buffer import addToClipBoard
 from modules.notifySend import notify_send
@@ -38,15 +39,16 @@ def backups():
                 exit(1)
             path_arr = vps_path.split("/")
             path_to_aimwp = "/".join(path_arr[:-2]) + "/ai1wm-backups"
-            vps_url = f"{vps_item['user']}@{vps_item['ip']}"
             addToClipBoard(vps_pass)
-            vps_command = (
-                f"sshpass -p '{vps_pass}' rsync -avP "
-                f"-e 'ssh -p {vps_port} -o StrictHostKeyChecking=accept-new' "
-                f"'{wpress_file}' {vps_url}:{path_to_aimwp}"
+            Rsync.push(
+                wpress_file,
+                path_to_aimwp,
+                user=vps_item["user"],
+                host=vps_item["ip"],
+                password=vps_pass,
+                port=vps_port,
+                flags="-avP",
             )
-            Print.info(f"VPS command: {vps_command}")
-            os.system(vps_command)
             Print.success("File copied")
             notify_send(
                 f"Copied {os.path.basename(wpress_file)} to {path_to_aimwp}")

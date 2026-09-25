@@ -7,6 +7,7 @@ from watchdog.events import FileSystemEventHandler
 from watchdog.observers import Observer
 
 from py_libs.Print import Print
+from py_libs.Rsync import Rsync
 
 from libs.buffer import addToClipBoard
 from modules.notifySend import notify_send
@@ -35,24 +36,15 @@ def uploadFiles():
         """Upload a file to the remote server."""
         relative_path = os.path.relpath(file_path, ".")
         print(f"PORT upload_file: {PORT}")
-        command = [
-            "sshpass",
-            "-p",
-            PASSWORD,
-            "rsync",
-            "-avz",
-            "--progress",
-            f"--rsh=sshpass -p {PASSWORD} ssh -p {PORT} -o StrictHostKeyChecking=accept-new",
+        Rsync.push(
             file_path,
-            f"{USERNAME}@{HOST}:{REMOTE_PATH}{relative_path}",
-        ]
-        # command = [
-        #     "sshpass", "-p", PASSWORD, "rsync", "-avz", "--progress",
-        #     "-e", f"ssh -p {PORT}",
-        #     file_path, f"{USERNAME}@{HOST}:{REMOTE_PATH}{relative_path}"
-        # ]
-        print(command)
-        subprocess.run(command, check=True)
+            f"{REMOTE_PATH}{relative_path}",
+            user=USERNAME,
+            host=HOST,
+            password=PASSWORD,
+            port=PORT,
+            flags="-avz --progress",
+        )
         notify_send(f"Uploading {file_path} to {REMOTE_PATH}{relative_path}")
 
     def delete_file(file_path):
@@ -140,33 +132,25 @@ def uploadFiles():
             f"rm -rf {REMOTE_PATH}dist",
         ]
         subprocess.run(command, check=True)
-        command = [
-            "sshpass",
-            "-p",
-            PASSWORD,
-            "rsync",
-            "-avz",
-            "--progress",
-            f"--rsh=sshpass -p {PASSWORD} ssh -p {PORT} -o StrictHostKeyChecking=accept-new",
+        Rsync.push(
             dist_path,
-            f"{USERNAME}@{HOST}:{REMOTE_PATH}",
-        ]
-        print(f"command: {command}")
-        subprocess.run(command, check=True)
+            REMOTE_PATH,
+            user=USERNAME,
+            host=HOST,
+            password=PASSWORD,
+            port=PORT,
+            flags="-avz --progress",
+        )
         # upload front-page on server
-        command = [
-            "sshpass",
-            "-p",
-            PASSWORD,
-            "rsync",
-            "-avz",
-            "--progress",
-            f"--rsh=sshpass -p {PASSWORD} ssh -p {PORT} -o StrictHostKeyChecking=accept-new",
+        Rsync.push(
             "./functions.php",
-            f"{USERNAME}@{HOST}:{REMOTE_PATH}/functions.php",
-        ]
-        subprocess.run(command, check=True)
-        print(f"command: {command}")
+            f"{REMOTE_PATH}/functions.php",
+            user=USERNAME,
+            host=HOST,
+            password=PASSWORD,
+            port=PORT,
+            flags="-avz --progress",
+        )
         notify_send(f"Uploading {dist_path} to {REMOTE_PATH}")
 
     print("1) Upload all files(type 1 or any key, or press enter)")

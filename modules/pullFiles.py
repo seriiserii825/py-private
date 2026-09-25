@@ -1,11 +1,11 @@
 import os
-import subprocess
 
 from rich import print
 from rich.console import Console
 
 from py_libs.InputValidator import InputValidator
 from py_libs.Print import Print
+from py_libs.Rsync import Rsync
 
 from modules.notifySend import notify_send
 from modules.pushFiles import _build_remote_path, _select_project
@@ -61,7 +61,7 @@ def pullFiles():
         "Without --delete: local files are kept even if removed on server"
     )
     use_delete = input("Use --delete? (y/n, default n): ").strip().lower()
-    delete_flag = ["--delete"] if use_delete == "y" else []
+    delete = use_delete == "y"
 
     console.print(f"\n[green]Remote:[/green] {USERNAME}@{HOST}:{source}")
     console.print(f"[green]Local:[/green]  {local_dest}")
@@ -71,16 +71,14 @@ def pullFiles():
         Print.warning("Cancelled")
         return
 
-    command = [
-        "sshpass", "-p", PASSWORD,
-        "rsync", "-av", "--progress",
-        f"--rsh=sshpass -p {PASSWORD} ssh -p {PORT} -o StrictHostKeyChecking=accept-new",
-        *delete_flag,
-        f"{USERNAME}@{HOST}:{source}",
+    Rsync.pull(
+        source,
         local_dest,
-    ]
-
-    print(f"\n[dim]{' '.join(str(c) for c in command)}[/dim]\n")
-    subprocess.run(command, check=True)
+        user=USERNAME,
+        host=HOST,
+        password=PASSWORD,
+        port=PORT,
+        delete=delete,
+    )
     notify_send(f"Pulled {HOST}:{source} → {local_dest}")
     Print.success(f"Done: {HOST}:{source} → {local_dest}")

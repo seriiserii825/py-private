@@ -1,11 +1,11 @@
 import os
-import subprocess
 import sys
 
 from rich import print
 from rich.console import Console
 
 from py_libs.Print import Print
+from py_libs.Rsync import Rsync
 
 from libs.chooseDir import chooseDir
 from libs.selectWithFzf import selectWithFzf
@@ -183,7 +183,7 @@ def pushFiles():
         "Without --delete: remote keeps files even if deleted locally"
     )
     use_delete = input("Use --delete? (y/n, default n): ").strip().lower()
-    delete_flag = ["--delete"] if use_delete == "y" else []
+    delete = use_delete == "y"
 
     if kind == "folder":
         sync_choice = input(
@@ -204,16 +204,14 @@ def pushFiles():
         Print.warning("Cancelled")
         return
 
-    command = [
-        "sshpass", "-p", PASSWORD,
-        "rsync", "-av", "--progress",
-        f"--rsh=sshpass -p {PASSWORD} ssh -p {PORT} -o StrictHostKeyChecking=accept-new",
-        *delete_flag,
+    Rsync.push(
         source,
-        f"{USERNAME}@{HOST}:{remote_path}",
-    ]
-
-    print(f"\n[dim]{' '.join(str(c) for c in command)}[/dim]\n")
-    subprocess.run(command, check=True)
+        remote_path,
+        user=USERNAME,
+        host=HOST,
+        password=PASSWORD,
+        port=PORT,
+        delete=delete,
+    )
     notify_send(f"Pushed {source} → {HOST}:{remote_path}")
     Print.success(f"Done: {source} → {HOST}:{remote_path}")

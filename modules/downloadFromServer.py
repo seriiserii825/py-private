@@ -1,10 +1,10 @@
 import os
-import subprocess
 
 from rich import print
 from rich.console import Console
 
 from py_libs.Print import Print
+from py_libs.Rsync import Rsync
 
 from modules.notifySend import notify_send
 from modules.pushFiles import _ask_remote_path, _select_server
@@ -53,15 +53,13 @@ def downloadFromServer():
         Print.warning("Cancelled")
         return
 
-    command = [
-        "sshpass", "-p", PASSWORD,
-        "rsync", "-av", "--progress",
-        f"--rsh=sshpass -p {PASSWORD} ssh -p {PORT} -o StrictHostKeyChecking=accept-new",
-        f"{USERNAME}@{HOST}:{source_path}",
+    Rsync.pull(
+        source_path,
         DOWNLOADS_DIR + "/",
-    ]
-
-    print(f"\n[dim]{' '.join(str(c) for c in command)}[/dim]\n")
-    subprocess.run(command, check=True)
+        user=USERNAME,
+        host=HOST,
+        password=PASSWORD,
+        port=PORT,
+    )
     notify_send(f"Downloaded {HOST}:{remote_path} → {DOWNLOADS_DIR}")
     Print.success(f"Done: {HOST}:{remote_path} → {DOWNLOADS_DIR}")
