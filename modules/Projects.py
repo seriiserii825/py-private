@@ -2,7 +2,7 @@ import os
 import time
 from pathlib import Path
 
-from libs.buffer import addToClipBoard
+from py_libs.Clipboard import Clipboard
 from py_libs.CsvFile import CsvFile
 from py_libs.Print import Print
 
@@ -40,13 +40,13 @@ class Projects:
         return {}
 
     def copyServerToClipboard(self, server):
-        addToClipBoard(f"{server['password']}")
+        Clipboard.write(f"{server['password']}")
         Print.success("Password copied to clipboard")
         time.sleep(3)  # Give user time to paste the password before overwriting
         if server["port"] == 22:
-            addToClipBoard(f"ssh {server['login']}@{server['host']}")
+            Clipboard.write(f"ssh {server['login']}@{server['host']}")
         else:
-            addToClipBoard(
+            Clipboard.write(
                 f"ssh -p {server['port']} {server['login']}@{server['host']}"
             )
         Print.success("User and host copied to clipboard")

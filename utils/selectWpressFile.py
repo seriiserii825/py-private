@@ -3,7 +3,6 @@ import os
 
 from py_libs.FilesHandle import FilesHandle
 from py_libs.Select import Select
-from libs.selectWithFzf import selectWithFzf
 
 
 def selectWpressFiles():

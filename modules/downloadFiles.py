@@ -4,14 +4,14 @@ from rich import print
 
 from py_libs.Print import Print
 
-from libs.buffer import addToClipBoardFile, getFromClipBoard
+from py_libs.Clipboard import Clipboard
 from modules.getHostByProjectName import getHostByProjectName
 from modules.getServerByHost import getServerByHost
 from modules.notifySend import notify_send
 
 
 def downloadFiles():
-    clipboard = getFromClipBoard()
+    clipboard = Clipboard.read()
     print(f"clipboard: {clipboard}")
     if clipboard.startswith("/home/"):
         conting_segments = clipboard.split("/")
@@ -31,7 +31,7 @@ def downloadFiles():
             ip = server[2]
             password = server[3].split("\n")[0]
             port = server[4].strip() if len(server) > 4 else 22
-            addToClipBoardFile(password)
+            Clipboard.write(password)
             PASSWORD = password
             command = [
                 "sshpass",

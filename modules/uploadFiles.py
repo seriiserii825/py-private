@@ -9,7 +9,7 @@ from watchdog.observers import Observer
 from py_libs.Print import Print
 from py_libs.Rsync import Rsync
 
-from libs.buffer import addToClipBoard
+from py_libs.Clipboard import Clipboard
 from modules.notifySend import notify_send
 from modules.Projects import Projects
 
@@ -29,7 +29,7 @@ def uploadFiles():
 
     REMOTE_PATH = REMOTE_PATH if REMOTE_PATH.endswith("/") else REMOTE_PATH + "/"
 
-    addToClipBoard(PASSWORD)
+    Clipboard.write(PASSWORD)
 
     def upload_file(file_path):
         print(f"file_path: {file_path}")

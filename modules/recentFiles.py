@@ -7,7 +7,7 @@ from rich.console import Console
 from py_libs.Menu import Menu
 from py_libs.Print import Print
 
-from libs.selectWithFzf import selectWithFzf
+from py_libs.Select import Select
 from modules.Projects import Projects
 from utils.getProjectsFromCsv import getProjectsFromCsv
 
@@ -24,7 +24,7 @@ SEARCH_DIRS = [
 
 
 def _fzf(items):
-    result = selectWithFzf(list(items) + _NAV)
+    result = Select.select_fzf_one(list(items) + _NAV)
     if result == "--- back to menu ---":
         return None
     if result == "--- exit ---":

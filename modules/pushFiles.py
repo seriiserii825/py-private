@@ -7,8 +7,7 @@ from rich.console import Console
 from py_libs.Print import Print
 from py_libs.Rsync import Rsync
 
-from libs.chooseDir import chooseDir
-from libs.selectWithFzf import selectWithFzf
+from py_libs.Select import Select
 from modules.Projects import Projects
 from modules.notifySend import notify_send
 from utils.getProjectsFromCsv import getProjectsFromCsv
@@ -30,7 +29,7 @@ _NAV = ["--- back to menu ---", "--- exit ---"]
 
 def _fzf(items):
     """FZF with back/exit options. Returns None to go back, exits on exit."""
-    result = selectWithFzf(list(items) + _NAV)
+    result = Select.select_fzf_one(list(items) + _NAV)
     if result == "--- back to menu ---":
         return None
     if result == "--- exit ---":

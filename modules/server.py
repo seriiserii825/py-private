@@ -8,7 +8,7 @@ from rich.table import Table
 
 from py_libs.Print import Print
 from py_libs.Select import Select
-from libs.buffer import addToClipBoard
+from py_libs.Clipboard import Clipboard
 from modules.notifySend import notify_send
 from utils.getVps import getVps
 from utils.reportSshError import reportSshError
@@ -19,7 +19,7 @@ def server():
     print(Panel(f"Choosed server: [green]{choosed_server['name']}"))
     password = choosed_server["password"]
     port = choosed_server["port"]
-    addToClipBoard(password)
+    Clipboard.write(password)
     notify_send("Server password copied to clipboard 📋")
     user = choosed_server["user"]
     vps = choosed_server
