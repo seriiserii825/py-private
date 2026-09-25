@@ -1,8 +1,9 @@
-import csv
 import os
 
 from pyfzf.pyfzf import FzfPrompt
 from rich import print
+
+from py_libs.CsvFile import CsvFile
 
 ALL_PROJECTS_FILE = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "all-projects.csv")
 
@@ -12,9 +13,7 @@ def findAllProject():
         print("[red]all-projects.csv not found. Run option 9 first to generate it.")
         return
 
-    with open(ALL_PROJECTS_FILE, newline="") as f:
-        reader = csv.DictReader(f)
-        rows = list(reader)
+    rows = CsvFile(ALL_PROJECTS_FILE).read_csv() or []
 
     if not rows:
         print("[yellow]all-projects.csv is empty.")

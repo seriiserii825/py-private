@@ -1,8 +1,8 @@
 import glob
 import os
 
-from classes.FilesHandle import FilesHandle
-from classes.utils.Select import Select
+from py_libs.FilesHandle import FilesHandle
+from py_libs.Select import Select
 from libs.selectWithFzf import selectWithFzf
 
 

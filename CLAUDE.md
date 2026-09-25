@@ -46,7 +46,7 @@ Both plain-text CSVs are git-ignored; only the `.gpg` versions are committed.
 - `Projects.py` — `Project` dataclass wrapping CSV row access
 - `viewProjects.py`, `findProject.py` — Rich table display + FZF search
 
-**Utils** (`utils/`, `libs/`): Shared helpers for CSV parsing (`getProjectsFromCsv.py`), FZF selection (`selectWithFzf.py`), clipboard (`buffer.py`), and Rich printing (`classes/utils/Print.py`).
+**Utils** (`utils/`, `libs/`): Shared helpers for CSV parsing (`getProjectsFromCsv.py`), FZF selection (`selectWithFzf.py`), clipboard (`buffer.py`), and Rich printing (`py_libs.Print`, from the `libs/py-libs` submodule).
 
 **Data flow (typical feature):**
 1. User picks option in `main.py`

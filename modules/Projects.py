@@ -1,4 +1,3 @@
-import csv
 import os
 import time
 from pathlib import Path
@@ -6,6 +5,7 @@ from pathlib import Path
 from rich import print
 
 from libs.buffer import addToClipBoard
+from py_libs.CsvFile import CsvFile
 
 
 class Projects:
@@ -28,19 +28,16 @@ class Projects:
 
     def getServerByName(self, server_name):
         csv_file = f"{self.SCRIPT_DIR}/servers.csv"
-        with open(csv_file, "r") as f:
-            for line in f:
-                server_data = line.strip().split(",")
-                if server_data[0] == server_name:
-                    return {
-                        "name": server_data[0],
-                        "login": server_data[1],
-                        "host": server_data[2],
-                        "password": server_data[3],
-                        "port": server_data[4]
-                        if len(server_data) > 4 and server_data[4]
-                        else 22,
-                    }
+        rows = CsvFile(csv_file).read_csv() or []
+        for row in rows:
+            if row["name"] == server_name:
+                return {
+                    "name": row["name"],
+                    "login": row["username"],
+                    "host": row["ip"],
+                    "password": row["password"],
+                    "port": row["port"] if row.get("port") else 22,
+                }
         return {}
 
     def copyServerToClipboard(self, server):
@@ -63,13 +60,12 @@ class Projects:
 
     def getProjectFromCsv(self):
         csv_file = f"{self.SCRIPT_DIR}/list.csv"
-        with open(csv_file, "r") as f:
-            for line in f:
-                project_data = line.strip().split(",")
-                if project_data[0] == self.project_name:
-                    self.project["name"] = project_data[0]
-                    self.project["server_name"] = project_data[1]
-                    self.project["server_path"] = project_data[2]
+        rows = CsvFile(csv_file).read_csv() or []
+        for row in rows:
+            if row["title"] == self.project_name:
+                self.project["name"] = row["title"]
+                self.project["server_name"] = row["vps"]
+                self.project["server_path"] = row["path"]
         if not self.project:
             print("Project not found")
             exit()
@@ -82,28 +78,21 @@ class Projects:
 
     def getServersFromCsv(self):
         csv_file = f"{self.SCRIPT_DIR}/servers.csv"
-        servers = []
-        with open(csv_file, "r", newline="") as infile:
-            reader = csv.DictReader(infile)
-            for row in reader:
-                servers.append(row["name"])
-        return servers
+        rows = CsvFile(csv_file).read_csv() or []
+        return [row["name"] for row in rows]
 
     def getServerFromCsv(self):
         csv_file = f"{self.SCRIPT_DIR}/servers.csv"
-        with open(csv_file, "r") as f:
-            for line in f:
-                server_data = line.strip().split(",")
-                if server_data[0] == self.project["server_name"]:
-                    self.project["server_login"] = server_data[1]
-                    self.project["server_host"] = server_data[2]
-                    self.project["server_password"] = server_data[3]
-                    # Check if server_data has at least 5 elements
-                    if len(server_data) > 4 and server_data[4]:
-                        self.project["server_port"] = server_data[4]
-                    else:
-                        self.project["server_port"] = 22
-                    print(f"Server found: [green]{self.project['server_name']}")
+        rows = CsvFile(csv_file).read_csv() or []
+        for row in rows:
+            if row["name"] == self.project["server_name"]:
+                self.project["server_login"] = row["username"]
+                self.project["server_host"] = row["ip"]
+                self.project["server_password"] = row["password"]
+                self.project["server_port"] = (
+                    row["port"] if row.get("port") else 22
+                )
+                print(f"Server found: [green]{self.project['server_name']}")
         if not self.project["server_login"]:
             print("[red]Server not found")
             exit()

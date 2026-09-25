@@ -6,7 +6,7 @@ from rich.console import Console
 from rich.panel import Panel
 from rich.table import Table
 
-from classes.utils.Select import Select
+from py_libs.Select import Select
 from libs.buffer import addToClipBoard
 from modules.notifySend import notify_send
 from utils.getVps import getVps

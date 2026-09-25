@@ -1,4 +1,3 @@
-import csv
 import os
 import subprocess
 
@@ -6,6 +5,7 @@ from rich import print
 from rich.console import Console
 from rich.progress import Progress, SpinnerColumn, TextColumn
 
+from py_libs.CsvFile import CsvFile
 from utils.getVps import getVps
 
 OUTPUT_FILE = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "all-projects.csv")
@@ -40,9 +40,6 @@ def allProjectsToFile():
                 rows.append({"server": srv["name"], "project": project})
             print(f"[green]  {srv['name']}: {len(projects)} projects")
 
-    with open(OUTPUT_FILE, "w", newline="") as f:
-        writer = csv.DictWriter(f, fieldnames=["server", "project"])
-        writer.writeheader()
-        writer.writerows(rows)
+    CsvFile(OUTPUT_FILE).write_csv(rows, fieldnames=["server", "project"])
 
     print(f"\n[bold green]Saved {len(rows)} projects to [white]{OUTPUT_FILE}")

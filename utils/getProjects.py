@@ -1,23 +1,18 @@
-import csv
 import os
 
 from termcolor import colored
 
+from py_libs.CsvFile import CsvFile
+
 
 def getProjects(theme_name):
-    projects = ()
     ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    # print(ROOT_DIR)
     csv_file_path = os.path.join(ROOT_DIR, "list.csv")
-    with open(csv_file_path) as my_file:
-        reader = csv.reader(my_file, delimiter=",")
-        for row in reader:
-            project = {
-                "title": row[0],
-                "vps": row[1],
-                "path": row[2],
-            }
-            projects = projects + (project,)
+    rows = CsvFile(csv_file_path).read_csv() or []
+    projects = tuple(
+        {"title": row["title"], "vps": row["vps"], "path": row["path"]}
+        for row in rows
+    )
     theme_is_in_projects = [
         project for project in projects if project["title"] == theme_name
     ]
