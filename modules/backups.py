@@ -45,7 +45,7 @@ def backups():
                 path_to_aimwp,
                 user=vps_item["user"],
                 host=vps_item["ip"],
-                password=vps_pass,
+                password=vps_pass,  # ggignore
                 port=vps_port,
                 flags="-avP",
             )
