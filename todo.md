@@ -38,3 +38,4 @@ vps10webmaster
 cairepro webmaster
 removed old cairepro
 ag-angelo-ricciardone
+baldini
