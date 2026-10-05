@@ -14,6 +14,7 @@ from modules.copyServerDataToClipboard import copyServerDataToClipboard
 from modules.downloadFiles import downloadFiles
 from modules.downloadFromServer import downloadFromServer
 from modules.findProject import findProject
+from modules.findServerBySite import findServerBySite
 from modules.server import server
 from modules.pushFiles import pushFiles
 from modules.pullFiles import pullFiles
@@ -41,6 +42,7 @@ MENU_ITEMS = [
     ("Recent modified files on server", recentFiles, True),
     ("Pull files/folder from project (rsync)", pullFiles, True),
     ("Download from server (rsync)", downloadFromServer, True),
+    ("Find server by site name (nmap)", findServerBySite, True),
 ]
 
 EXIT_LABEL = "Exit"
