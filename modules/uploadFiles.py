@@ -29,7 +29,7 @@ def uploadFiles():
 
     REMOTE_PATH = REMOTE_PATH if REMOTE_PATH.endswith("/") else REMOTE_PATH + "/"
 
-    Clipboard.write(PASSWORD)
+    Clipboard.write(PASSWORD, show=False)
 
     def upload_file(file_path):
         print(f"file_path: {file_path}")

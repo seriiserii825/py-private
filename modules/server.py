@@ -19,7 +19,7 @@ def server():
     print(Panel(f"Choosed server: [green]{choosed_server['name']}"))
     password = choosed_server["password"]
     port = choosed_server["port"]
-    Clipboard.write(password)
+    Clipboard.write(password, show=False)
     notify_send("Server password copied to clipboard 📋")
     user = choosed_server["user"]
     vps = choosed_server

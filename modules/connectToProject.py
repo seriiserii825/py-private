@@ -23,7 +23,7 @@ def connectToProject():
                     server_port = vps["port"]
                     new_path = project["path"]
                     password = vps["password"]
-                    Clipboard.write(password)
+                    Clipboard.write(password, show=False)
                     notify_send("Server password copied to clipboard 📋")
                     cmd = [
                         "sshpass", "-p", password,

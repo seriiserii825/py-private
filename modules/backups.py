@@ -39,7 +39,7 @@ def backups():
                 exit(1)
             path_arr = vps_path.split("/")
             path_to_aimwp = "/".join(path_arr[:-2]) + "/ai1wm-backups"
-            Clipboard.write(vps_pass)
+            Clipboard.write(vps_pass, show=False)
             Rsync.push(
                 wpress_file,
                 path_to_aimwp,

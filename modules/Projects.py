@@ -40,7 +40,7 @@ class Projects:
         return {}
 
     def copyServerToClipboard(self, server):
-        Clipboard.write(f"{server['password']}")
+        Clipboard.write(server["password"], show=False)
         Print.success("Password copied to clipboard")
         time.sleep(3)  # Give user time to paste the password before overwriting
         if server["port"] == 22:

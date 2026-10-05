@@ -31,7 +31,7 @@ def downloadFiles():
             ip = server[2]
             password = server[3].split("\n")[0]
             port = server[4].strip() if len(server) > 4 else 22
-            Clipboard.write(password)
+            Clipboard.write(password, show=False)
             PASSWORD = password
             command = [
                 "sshpass",
