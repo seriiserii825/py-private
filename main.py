@@ -4,7 +4,7 @@ import os
 import sys
 
 from py_libs.Print import Print
-from py_libs.Select import Select
+from py_libs.Menu import Menu
 
 from modules.allProjectsToFile import allProjectsToFile
 from modules.findAllProject import findAllProject
@@ -49,19 +49,22 @@ EXIT_LABEL = "Exit"
 
 
 def menu():
-    labels = [label for label, _, _ in MENU_ITEMS] + [EXIT_LABEL]
-    choice = Select.select_fzf_one(labels)
+    rows = [["[magenta]0", f"[red]{EXIT_LABEL}"]] + [
+        [f"[magenta]{i}", f"[green]{label}"]
+        for i, (label, _, _) in enumerate(MENU_ITEMS, start=1)
+    ]
+    Menu.display("Choose an option", ["Index", "Option"], rows)
+    choice = Menu.choose_option()
 
-    if choice is None or choice == EXIT_LABEL:
+    if choice == 0:
         Print.error("Exit")
         exit()
 
-    for label, action, loop_back in MENU_ITEMS:
-        if choice == label:
-            action()
-            if loop_back:
-                menu()
-            exit()
+    _, action, loop_back = MENU_ITEMS[choice - 1]
+    action()
+    if loop_back:
+        menu()
+    exit()
 
 
 checkCsvFiles()
