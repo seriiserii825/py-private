@@ -49,10 +49,10 @@ EXIT_LABEL = "Exit"
 
 
 def menu():
-    rows = [["[magenta]0", f"[red]{EXIT_LABEL}"]] + [
+    rows = [
         [f"[magenta]{i}", f"[green]{label}"]
         for i, (label, _, _) in enumerate(MENU_ITEMS, start=1)
-    ]
+    ] + [["[magenta]0", f"[red]{EXIT_LABEL}"]]
     Menu.display("Choose an option", ["Index", "Option"], rows)
     choice = Menu.choose_option()
 
