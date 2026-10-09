@@ -28,39 +28,46 @@ if __name__ == "__main__":
 
 
 MENU_ITEMS = [
-    ("View All Projects", viewProjects, True),
-    ("Find Project", findProject, True),
-    ("Upload Backup", backups, True),
-    ("Connect to Server", server, True),
-    ("Connect to project on server", connectToProject, True),
-    ("Upload files", uploadFiles, True),
-    ("Download files", downloadFiles, True),
-    ("Copy server data to clipboard", copyServerDataToClipboard, False),
-    ("All projects to file", allProjectsToFile, True),
-    ("Find in all projects", findAllProject, True),
-    ("Push files/folder to project or server (rsync)", pushFiles, True),
-    ("Recent modified files on server", recentFiles, True),
-    ("Pull files/folder from project (rsync)", pullFiles, True),
-    ("Download from server (rsync)", downloadFromServer, True),
-    ("Find server by site name (nmap)", findServerBySite, True),
+    # view / find
+    ("View All Projects", viewProjects, True, "green"),
+    ("Find Project", findProject, True, "green"),
+    ("Find in all projects", findAllProject, True, "green"),
+    ("Find server by site name (nmap)", findServerBySite, True, "green"),
+    ("All projects to file", allProjectsToFile, True, "green"),
+    # connect
+    ("Connect to Server", server, True, "cyan"),
+    ("Connect to project on server", connectToProject, True, "cyan"),
+    ("Copy server data to clipboard", copyServerDataToClipboard, False, "cyan"),
+    # upload / download
+    ("Upload files", uploadFiles, True, "blue"),
+    ("Download files", downloadFiles, True, "blue"),
+    ("Upload Backup", backups, True, "blue"),
+    # rsync
+    (
+        "Push files/folder to project or server (rsync)",
+        pushFiles,
+        True,
+        "yellow",
+    ),
+    ("Pull files/folder from project (rsync)", pullFiles, True, "yellow"),
+    ("Recent modified files on server", recentFiles, True, "yellow"),
+    ("Download from server (rsync)", downloadFromServer, True, "yellow"),
 ]
 
-EXIT_LABEL = "Exit"
+
+def select_menu_option() -> int:
+    labels = [f"[{color}]{label}" for label, _, _, color in MENU_ITEMS]
+    return Menu.select_fzf_menu(labels) or 0
 
 
 def menu():
-    rows = [
-        [f"[magenta]{i}", f"[green]{label}"]
-        for i, (label, _, _) in enumerate(MENU_ITEMS, start=1)
-    ] + [["[magenta]0", f"[red]{EXIT_LABEL}"]]
-    Menu.display("Choose an option", ["Index", "Option"], rows)
-    choice = Menu.choose_option()
+    choice = select_menu_option()
 
     if choice == 0:
         Print.error("Exit")
         exit()
 
-    _, action, loop_back = MENU_ITEMS[choice - 1]
+    _, action, loop_back, _ = MENU_ITEMS[choice - 1]
     action()
     if loop_back:
         menu()
